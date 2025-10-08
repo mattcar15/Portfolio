@@ -10,9 +10,18 @@ export type ExperienceItem = {
 type ExperienceSectionProps = {
   experience: ExperienceItem[];
   skills: string[];
+  selectedImpact: string[];
+  education: {
+    institution: string;
+    degree: string;
+    location: string;
+    graduation: string;
+    gpa?: string;
+    coursework?: string[];
+  };
 };
 
-export function ExperienceSection({ experience, skills }: ExperienceSectionProps) {
+export function ExperienceSection({ experience, skills, selectedImpact, education }: ExperienceSectionProps) {
   return (
     <section id="resume" className="min-h-screen py-32 px-6 lg:px-32 pl-20 lg:pl-40">
       <div className="max-w-6xl mx-auto">
@@ -48,13 +57,28 @@ export function ExperienceSection({ experience, skills }: ExperienceSectionProps
 
         <div className="border-t border-gray-200 pt-16">
           <h3 className="text-3xl font-bold mb-8">Skills & Technologies</h3>
-          <div className="text-xl text-gray-600 leading-relaxed">{skills.join(' • ')}</div>
+          <ul className="space-y-3 text-xl text-gray-600 leading-relaxed">
+            {skills.map((skill, index) => (
+              <li key={index} className="pl-6 relative before:content-[''] before:absolute before:left-0 before:top-3 before:w-2 before:h-px before:bg-gradient-to-r before:from-orange-500 before:to-blue-600">
+                {skill}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="mt-16 border-t border-gray-200 pt-16">
           <h3 className="text-3xl font-bold mb-6">Education</h3>
-          <div className="text-2xl font-semibold">Georgia Institute of Technology</div>
-          <div className="text-lg mt-2">Computer Science</div>
+          <div className="text-2xl font-semibold">{education.institution}</div>
+          <div className="text-lg mt-2">{education.degree}</div>
+          <div className="text-sm text-gray-500 mt-2">
+            {education.location} • {education.graduation}
+            {education.gpa ? ` • GPA: ${education.gpa}` : ''}
+          </div>
+          {education.coursework && education.coursework.length > 0 && (
+            <div className="text-base text-gray-600 leading-relaxed mt-4">
+              <span className="font-semibold text-gray-700">Relevant Coursework:</span> {education.coursework.join(' • ')}
+            </div>
+          )}
         </div>
       </div>
     </section>

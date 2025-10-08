@@ -12,7 +12,7 @@ const gradientPalette = [
   { stops: ['#6EE2F5', '#6454F0'], className: 'from-[#6EE2F5] to-[#6454F0]' },
   { stops: ['#FFCF1B', '#FF881B'], className: 'from-[#FFCF1B] to-[#FF881B]' },
   { stops: ['#6FE893', '#39A275'], className: 'from-[#6FE893] to-[#39A275]' },
-  { stops: ['#FFCDA5', '#EE4D5F'], className: 'from-[#FFCDA5] to-[#EE4D5F]' },
+  { stops: ['#ED876C', '#E3293E'], className: 'from-[#ED876C] to-[#E3293E]' },
   { stops: ['#3EC3B9', '#208CB0'], className: 'from-[#3EC3B9] to-[#208CB0]' },
   { stops: ['#FF6A00', '#EE0979'], className: 'from-[#FF6A00] to-[#EE0979]' },
 ] as const;
@@ -22,7 +22,7 @@ type ProjectBaseData = Omit<Project, 'gradient' | 'gradientStops'>;
 const projectBaseData: ProjectBaseData[] = [
   {
     id: 1,
-    title: "Orri AI",
+    title: "Celna",
     description: "E2E encrypted AI agent platform with proprietary sync mechanism",
     type: "gradient",
     tags: ["FastAPI", "K8s", "E2E Encryption"],
@@ -116,32 +116,87 @@ export default function Home() {
 
   const experience: ExperienceItem[] = [
     {
-      title: "Co-Founder",
+      title: "Co-founder & CEO",
       company: "Celna",
-      period: "2024 - 2025",
-      location: "Somerville, MA",
-      description: "Co-founded an AI company building cutting-edge infrastructure for AI agent platforms. Led the technical architecture and DevOps strategy through strategic pivots from an encrypted AI agent platform to an Okta-styled MCP service.",
+      period: "Nov 2024 – Present",
+      location: "Boston, MA",
+      description: "Co-founding Celna and leading technical architecture for an encrypted data platform that evolved into an MCP multiplexing service.",
       achievements: [
-        "Designed and built E2E encrypted sync mechanism enabling server-mediated synchronization while maintaining zero-knowledge architecture",
-        "Architected CI/CD pipelines in Jenkins and CloudFormation templates for automated Kubernetes infrastructure deployment",
-        "Built microservices using FastAPI, Redis, Kafka, Postgres, and Qdrant for high-performance distributed systems",
-        "Developed system to automatically generate and test MCP servers, handling auth and hosting for any MCP client"
+        "Designed and built an end-to-end encrypted cross-device sync system with per-user keys, shared state, and server-opaque storage",
+        "Architected and ran a Kubernetes platform on EKS spanning FastAPI/Java services, Redis, Kafka, Keycloak, and Qdrant with automated CloudFormation + Jenkins delivery",
+        "Evolved the product into an MCP multiplexing layer with dynamic OAuth, credential management, and permissioning across connectors",
+        "Created an automated MCP connector builder combining templated CloudFormation, Jenkins, and code scaffolding for rapid new integrations"
       ]
     },
     {
-      title: "Software Engineer",
-      company: "Amazon",
-      period: "Previous Experience",
-      location: "Greater Boston",
-      description: "Contributed to large-scale distributed systems and cloud infrastructure.",
-      achievements: []
+      title: "Software Engineer (SDE II)",
+      company: "Amazon Web Services",
+      period: "Apr 2024 – Oct 2024",
+      location: "Hybrid",
+      description: "Led key infrastructure efforts for the AWS DMS × Amazon RDS Zero-ETL partnership.",
+      achievements: [
+        "Owned infrastructure build-out, billing and entitlements, and core platform setup for the Zero-ETL integration",
+        "Co-designed core Zero-ETL architecture leveraging Fargate, Lambda, SQS, S3, and internal DMS services in partnership with adjacent orgs",
+        "Built and maintained multi-region CI/CD pipelines with automated deployments to 30+ AWS regions",
+        "Led onboarding and mentorship for most new engineers on the team and authored runbooks and checklists",
+        "Served as Security Guardian, ensuring secure defaults and facilitating reviews"
+      ]
+    },
+    {
+      title: "Software Engineer (SDE I)",
+      company: "Amazon Web Services",
+      period: "Aug 2022 – Mar 2024",
+      location: "Hybrid",
+      description: "Delivered large-scale data migration capabilities within AWS Database Migration Service.",
+      achievements: [
+        "Shipped the AWS DMS → Amazon Timestream endpoint covering initial load and CDC across C/C++ engine code and Java services",
+        "Led a major engine release for DMS and authored team-wide major-version rollout guidelines",
+        "Implemented streaming targets for Kinesis and Kafka, handling complex type mapping and high-throughput ingestion",
+        "Built and operated automated release and deployment pipelines to boost reliability and developer velocity"
+      ]
+    },
+    {
+      title: "Earlier Experience",
+      company: "Amazon, Klaviyo, Radius Technologies",
+      period: "May 2020 – Jul 2021",
+      location: "Remote & Boston, MA",
+      description: "Internships spanning database migrations, developer tooling, and mobile applications.",
+      achievements: [
+        "Amazon — SDE Intern, DMS (May 2021 – Jul 2021): prototyped DMS migration to Amazon Timestream across C/C++ and Java",
+        "Klaviyo — Software Engineering Intern (Jan 2021 – Apr 2021): delivered React features and Selenium tooling for performance and asset audits",
+        "Radius Technologies — Software Engineering Intern (May 2020 – Aug 2020): built Swift/React Native apps with Apple Vision and Firebase/AWS backends"
+      ]
     }
   ];
 
   const skills = [
-    "Kubernetes", "Docker", "Jenkins", "CloudFormation", "Helm", "FastAPI", "Python",
-    "Redis", "Kafka", "PostgreSQL", "Qdrant", "AWS", "Microservices", "E2E Encryption",
-    "Distributed Systems", "CI/CD", "Infrastructure as Code", "Vector Databases"
+    "Languages: Java (advanced), Python (advanced), C/C++ (intermediate), JavaScript/TypeScript, SQL",
+    "Cloud & Infra: AWS (DMS, RDS, Lambda, Fargate, SQS, S3, EKS, IAM), Kubernetes, CloudFormation, Jenkins, Docker",
+    "Data & Streaming: Amazon Timestream, PostgreSQL/MySQL, Kafka/Kinesis, Redis, Qdrant",
+    "Security: IAM design, Keycloak, service-to-service authentication, Security Guardian best practices",
+    "Frameworks: FastAPI, Next.js, React Native"
+  ];
+
+  const education = {
+    institution: "Georgia Institute of Technology",
+    degree: "B.S. in Computer Science",
+    location: "Atlanta, GA",
+    graduation: "May 2022",
+    gpa: "3.9",
+    coursework: [
+      "Natural Language Processing",
+      "Computer Vision",
+      "Honors Algorithms",
+      "Systems & Networks",
+      "Databases"
+    ]
+  };
+
+  const selectedImpact = [
+    "Led DMS major engine release and defined team-wide major-version release guidelines",
+    "Built and operated global multi-region pipelines that standardized deployment patterns across the team",
+    "Mentored and onboarded the majority of new hires, improving time-to-first-PR and service ownership readiness",
+    "Delivered server-opaque end-to-end encrypted sync and an MCP connector factory enabling rapid integrations"
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -153,7 +208,12 @@ export default function Home() {
       <SideNav sections={sections} activeSection={activeSection} onNavigate={scrollToSection} />
       <IntroSection />
       <ProjectsSection projects={projects} />
-      <ExperienceSection experience={experience} skills={skills} />
+      <ExperienceSection
+        experience={experience}
+        skills={skills}
+        education={education}
+        selectedImpact={selectedImpact}
+      />
       <ContactSection
         email="mwcarroll12@gmail.com"
         githubUrl="https://github.com/mattcar15"

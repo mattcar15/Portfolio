@@ -6,12 +6,11 @@ export function IntroSection() {
           Matt Carroll
         </div>
 
-        <p className="text-2xl md:text-3xl text-gray-600 mb-3">Hey, here's what I'm working on</p>
-        <div className="w-20 h-1 bg-gradient-to-r from-orange-500 to-blue-600 mb-10" />
+        <p className="text-2xl md:text-3xl text-gray-600 mb-3">Hey, here's a bit about me</p>
+        <div className="w-20 h-1 bg-gradient-to-r from-orange-500 to-blue-600 mb-10 rounded-full" />
 
         <p className="text-xl md:text-2xl text-gray-500 leading-relaxed max-w-3xl">
-          Building AI infrastructure and distributed systems. Co-founder focused on E2E encryption,
-          Kubernetes orchestration, and creating developer tools that scale.
+          I like building a range of things, both phsyical and digital. This page is the home of some of the projects that I've worked on and wanted to share!
         </p>
       </div>
     </section>
