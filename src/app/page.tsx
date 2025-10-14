@@ -6,6 +6,12 @@ import { IntroSection } from '@/components/IntroSection';
 import { ProjectsSection, Project } from '@/components/ProjectsSection';
 import { ExperienceSection, ExperienceItem } from '@/components/ExperienceSection';
 import { ContactSection } from '@/components/ContactSection';
+import CelnaEncryptedPlatform from '@/components/projects/CelnaEncryptedPlatform';
+import CelnaMCPService from '@/components/projects/CelnaMCPService';
+import InfrastructureAutomation from '@/components/projects/InfrastructureAutomation';
+import DataSyncEngine from '@/components/projects/DataSyncEngine';
+import APIGateway from '@/components/projects/APIGateway';
+import RealTimeAnalytics from '@/components/projects/RealTimeAnalytics';
 
 const gradientPalette = [
   { stops: ['#FFA62E', '#EA4D2C'], className: 'from-[#FFA62E] to-[#EA4D2C]' },
@@ -26,7 +32,8 @@ const projectBaseData: ProjectBaseData[] = [
     description: "E2E encrypted AI agent platform with proprietary sync mechanism",
     type: "gradient",
     tags: ["FastAPI", "K8s", "E2E Encryption"],
-    height: "h-[400px]"
+    height: "h-[400px]",
+    component: CelnaEncryptedPlatform
   },
   {
     id: 2,
@@ -34,7 +41,8 @@ const projectBaseData: ProjectBaseData[] = [
     description: "Okta-styled MCP service with auto-generation and testing",
     type: "gradient",
     tags: ["Kafka", "Redis", "Postgres"],
-    height: "h-[500px]"
+    height: "h-[500px]",
+    component: CelnaMCPService
   },
   {
     id: 3,
@@ -42,7 +50,8 @@ const projectBaseData: ProjectBaseData[] = [
     description: "CloudFormation and Helm-based Kubernetes deployment system",
     type: "gradient",
     tags: ["Jenkins", "CloudFormation", "Helm"],
-    height: "h-[450px]"
+    height: "h-[450px]",
+    component: InfrastructureAutomation
   },
   {
     id: 4,
@@ -50,7 +59,8 @@ const projectBaseData: ProjectBaseData[] = [
     description: "Novel E2E encrypted synchronization mechanism for distributed devices",
     type: "gradient",
     tags: ["Python", "Qdrant", "Distributed Systems"],
-    height: "h-[380px]"
+    height: "h-[380px]",
+    component: DataSyncEngine
   },
   {
     id: 5,
@@ -58,7 +68,8 @@ const projectBaseData: ProjectBaseData[] = [
     description: "High-performance API gateway with rate limiting and authentication",
     type: "gradient",
     tags: ["Go", "Redis", "gRPC"],
-    height: "h-[420px]"
+    height: "h-[420px]",
+    component: APIGateway
   },
   {
     id: 6,
@@ -66,7 +77,8 @@ const projectBaseData: ProjectBaseData[] = [
     description: "Real-time data processing and analytics platform",
     type: "gradient",
     tags: ["Apache Flink", "Kafka", "TimescaleDB"],
-    height: "h-[480px]"
+    height: "h-[480px]",
+    component: RealTimeAnalytics
   }
 ];
 

@@ -52,7 +52,13 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   --tw-text-opacity: 1;
+  scrollbar-gutter: stable;
 }
+
+
+/* html {
+  scrollbar-gutter: stable;
+} */
 
 .contact-send-icon {
   display: block;
