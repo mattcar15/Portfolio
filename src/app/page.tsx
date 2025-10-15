@@ -212,7 +212,34 @@ export default function Home() {
   ];
 
   const scrollToSection = (sectionId: string) => {
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    const element = document.getElementById(sectionId);
+    if (!element) return;
+
+    const targetPosition = element.offsetTop;
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+    const duration = 800; // Match the indicator animation duration
+    let startTime: number | null = null;
+
+    // Ease-out function to match the indicator's ease-out timing
+    const easeOutCubic = (t: number): number => {
+      return 1 - Math.pow(1 - t, 3);
+    };
+
+    const animation = (currentTime: number) => {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      
+      const ease = easeOutCubic(progress);
+      window.scrollTo(0, startPosition + distance * ease);
+
+      if (progress < 1) {
+        requestAnimationFrame(animation);
+      }
+    };
+
+    requestAnimationFrame(animation);
   };
 
   return (
