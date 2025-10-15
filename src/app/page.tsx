@@ -6,12 +6,14 @@ import { IntroSection } from '@/components/IntroSection';
 import { ProjectsSection, Project } from '@/components/ProjectsSection';
 import { ExperienceSection, ExperienceItem } from '@/components/ExperienceSection';
 import { ContactSection } from '@/components/ContactSection';
-import CelnaEncryptedPlatform from '@/components/projects/CelnaEncryptedPlatform';
-import CelnaMCPService from '@/components/projects/CelnaMCPService';
-import InfrastructureAutomation from '@/components/projects/InfrastructureAutomation';
-import DataSyncEngine from '@/components/projects/DataSyncEngine';
-import APIGateway from '@/components/projects/APIGateway';
-import RealTimeAnalytics from '@/components/projects/RealTimeAnalytics';
+import { celnaMetadata } from '@/components/projects/Celna';
+import { orriAIMetadata } from '@/components/projects/OrriAI';
+import { memoirMetadata } from '@/components/projects/Memoir';
+import { sproutMetadata } from '@/components/projects/Sprout';
+import { bambuConnectMetadata } from '@/components/projects/BambuConnect';
+import { carCamperMetadata } from '@/components/projects/CarCamper';
+import { magSleeveMetadata } from '@/components/projects/MagSleeve';
+import { wdtToolMetadata } from '@/components/projects/WDTTool';
 
 const gradientPalette = [
   { stops: ['#FFA62E', '#EA4D2C'], className: 'from-[#FFA62E] to-[#EA4D2C]' },
@@ -26,60 +28,14 @@ const gradientPalette = [
 type ProjectBaseData = Omit<Project, 'gradient' | 'gradientStops'>;
 
 const projectBaseData: ProjectBaseData[] = [
-  {
-    id: 1,
-    title: "Celna",
-    description: "E2E encrypted AI agent platform with proprietary sync mechanism",
-    type: "gradient",
-    tags: ["FastAPI", "K8s", "E2E Encryption"],
-    height: "h-[400px]",
-    component: CelnaEncryptedPlatform
-  },
-  {
-    id: 2,
-    title: "Celna",
-    description: "Okta-styled MCP service with auto-generation and testing",
-    type: "gradient",
-    tags: ["Kafka", "Redis", "Postgres"],
-    height: "h-[500px]",
-    component: CelnaMCPService
-  },
-  {
-    id: 3,
-    title: "Infrastructure Automation",
-    description: "CloudFormation and Helm-based Kubernetes deployment system",
-    type: "gradient",
-    tags: ["Jenkins", "CloudFormation", "Helm"],
-    height: "h-[450px]",
-    component: InfrastructureAutomation
-  },
-  {
-    id: 4,
-    title: "Data Sync Engine",
-    description: "Novel E2E encrypted synchronization mechanism for distributed devices",
-    type: "gradient",
-    tags: ["Python", "Qdrant", "Distributed Systems"],
-    height: "h-[380px]",
-    component: DataSyncEngine
-  },
-  {
-    id: 5,
-    title: "API Gateway",
-    description: "High-performance API gateway with rate limiting and authentication",
-    type: "gradient",
-    tags: ["Go", "Redis", "gRPC"],
-    height: "h-[420px]",
-    component: APIGateway
-  },
-  {
-    id: 6,
-    title: "Real-time Analytics",
-    description: "Real-time data processing and analytics platform",
-    type: "gradient",
-    tags: ["Apache Flink", "Kafka", "TimescaleDB"],
-    height: "h-[480px]",
-    component: RealTimeAnalytics
-  }
+  celnaMetadata,
+  orriAIMetadata,
+  memoirMetadata,
+  sproutMetadata,
+  bambuConnectMetadata,
+  carCamperMetadata,
+  magSleeveMetadata,
+  wdtToolMetadata
 ];
 
 export default function Home() {

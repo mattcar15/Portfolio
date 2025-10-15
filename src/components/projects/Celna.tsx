@@ -1,4 +1,4 @@
-export default function CelnaMCPService() {
+export default function Celna() {
   return (
     <div className="space-y-6">
       <p className="text-lg leading-relaxed text-slate-700 md:text-xl">
@@ -14,4 +14,14 @@ export default function CelnaMCPService() {
     </div>
   );
 }
+
+export const celnaMetadata = {
+  id: 1,
+  title: "Celna",
+  description: "Okta-styled MCP service with auto-generation and testing",
+  type: "gradient" as const,
+  tags: ["Kafka", "Redis", "Postgres"],
+  height: "h-[500px]",
+  component: Celna
+};
 
