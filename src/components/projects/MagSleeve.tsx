@@ -14,7 +14,7 @@ export const magSleeveMetadata = {
   description: "Magnetic charging laptop sleeve - drop in, grab and go",
   type: "gradient" as const,
   tags: ["Product Design", "Hardware", "UX"],
-  height: "h-[400px]",
+  height: "h-[380px] md:h-[450px]",
   component: MagSleeve
 };
 

@@ -15,7 +15,7 @@ export const celnaMetadata = {
   description: "Okta-styled MCP service with auto-generation and testing",
   type: "gradient" as const,
   tags: ["Kafka", "Redis", "Postgres"],
-  height: "h-[500px]",
+  height: "h-[380px] md:h-[450px]",
   component: Celna
 };
 

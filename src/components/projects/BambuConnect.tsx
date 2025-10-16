@@ -62,11 +62,11 @@ export default function BambuConnect() {
 }
 
 export const bambuConnectMetadata = {
-  id: 5,
+  id: 3,
   title: "bambu-connect",
   description: "Cross-platform 3D printer management and monitoring",
   type: "gradient" as const,
   tags: ["Python", "3D Printing", "Open Source"],
-  height: "h-[450px]",
+  height: "h-[380px] md:h-[400px]",
   component: BambuConnect
 };

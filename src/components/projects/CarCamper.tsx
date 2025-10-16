@@ -190,6 +190,6 @@ export const carCamperMetadata = {
   description: "Custom-built camper conversion for cross-country adventure",
   type: "gradient" as const,
   tags: ["Design", "Fabrication", "Adventure"],
-  height: "h-[480px]",
+  height: "h-[380px] md:h-[460px]",
   component: CarCamper
 };

@@ -11,10 +11,10 @@ export default function WDTTool() {
 export const wdtToolMetadata = {
   id: 8,
   title: "WDT Tool",
-  description: "3D-printed coffee distribution tool - learning to scale production",
+  description: "Scaling a 3D-printed coffee distribution tool",
   type: "gradient" as const,
   tags: ["3D Printing", "Manufacturing", "Coffee"],
-  height: "h-[380px]",
+  height: "h-[380px] md:h-[370px]",
   component: WDTTool
 };
 

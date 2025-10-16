@@ -9,12 +9,12 @@ export default function Sprout() {
 }
 
 export const sproutMetadata = {
-  id: 4,
+  id: 5,
   title: "Sprout",
   description: "App-controlled hydroponic growing system",
   type: "gradient" as const,
   tags: ["React Native", "IoT", "Hardware"],
-  height: "h-[420px]",
+  height: "h-[380px] md:h-[450px]",
   component: Sprout
 };
 

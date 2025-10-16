@@ -15,7 +15,7 @@ export const orriAIMetadata = {
   description: "E2E encrypted AI agent platform with proprietary sync mechanism",
   type: "gradient" as const,
   tags: ["FastAPI", "K8s", "E2E Encryption"],
-  height: "h-[400px]",
+  height: "h-[380px] md:h-[360px]",
   component: OrriAI
 };
 

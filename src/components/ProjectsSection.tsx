@@ -56,6 +56,33 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
   const [scrollProgress, setScrollProgress] = useState(0);
   const bodyScrollRef = useRef<HTMLDivElement | null>(null);
 
+  // Reorder projects for column layout to achieve left-to-right, top-to-bottom visual order
+  const reorderedProjects = useMemo(() => {
+    const getColumnCount = () => {
+      if (typeof window === 'undefined') return 3;
+      const width = window.innerWidth;
+      if (width < 768) return 1;
+      if (width < 1024) return 2;
+      return 3;
+    };
+
+    const numCols = getColumnCount();
+    const itemsPerCol = Math.ceil(projects.length / numCols);
+    const reordered = new Array(projects.length);
+
+    projects.forEach((project, visualIndex) => {
+      const visualRow = Math.floor(visualIndex / numCols);
+      const visualCol = visualIndex % numCols;
+      const physicalIndex = visualCol * itemsPerCol + visualRow;
+
+      if (physicalIndex < projects.length) {
+        reordered[physicalIndex] = project;
+      }
+    });
+
+    return reordered.filter(Boolean);
+  }, [projects, windowSize.width]);
+
   const handleOpenProject = useCallback(
     (project: Project, element: HTMLElement) => {
       const rect = element.getBoundingClientRect();
@@ -248,7 +275,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
         <h2 className="text-6xl md:text-7xl font-bold mb-16 text-black">Projects</h2>
 
         <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-          {projects.map((project) => {
+          {reorderedProjects.map((project) => {
             const stops = project.gradientStops ?? [];
             const gradientStyle =
               stops.length >= 2
@@ -278,7 +305,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                     />
                     <div className="relative h-full p-10 flex flex-col justify-end text-left text-white">
                       <div className="flex gap-2 mb-6 flex-wrap">
-                        {project.tags.map((tag, i) => (
+                        {project.tags.map((tag: string, i: number) => (
                           <span
                             key={i}
                             className="text-xs font-medium text-white/90 px-3 py-1.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-sm uppercase tracking-[0.18em]"

@@ -9,7 +9,7 @@ export default function Memoir() {
 }
 
 export const memoirMetadata = {
-  id: 3,
+  id: 4,
   title: "Memoir",
   description: "Local-first memory capture app for Mac",
   type: "gradient" as const,

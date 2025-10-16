@@ -30,12 +30,12 @@ type ProjectBaseData = Omit<Project, 'gradient' | 'gradientStops'>;
 const projectBaseData: ProjectBaseData[] = [
   celnaMetadata,
   orriAIMetadata,
+  bambuConnectMetadata,
   memoirMetadata,
   sproutMetadata,
-  bambuConnectMetadata,
   carCamperMetadata,
-  magSleeveMetadata,
-  wdtToolMetadata
+  wdtToolMetadata,
+  magSleeveMetadata
 ];
 
 export default function Home() {
