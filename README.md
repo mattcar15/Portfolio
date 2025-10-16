@@ -1,37 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio
+
+Personal portfolio website built with Next.js, showcasing projects and experience.
+
+🌐 **Live Site**: [carrollmatt.com](https://carrollmatt.com)
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org) - React framework with static site generation
+- TypeScript
+- Tailwind CSS
+- shadcn/ui components
 
 ## Getting Started
 
-First, run the development server:
+### Development
+
+First, install dependencies with Yarn:
 
 ```bash
-npm run dev
-# or
+yarn install
+```
+
+Then run the development server:
+
+```bash
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Building
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To create a production build:
 
-## Learn More
+```bash
+yarn build
+```
 
-To learn more about Next.js, take a look at the following resources:
+This generates a static export in the `./out` directory, which can be served by any static hosting provider.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The site is automatically deployed to GitHub Pages using GitHub Actions. The deployment workflow:
 
-## Deploy on Vercel
+1. **Trigger**: Automatically runs on every push to the `main` branch
+2. **Build Process**: 
+   - Uses Node.js 22.4.1
+   - Installs dependencies with `yarn install --frozen-lockfile`
+   - Builds the static site with `yarn build`
+3. **Deploy**: Uploads the `./out` directory to GitHub Pages
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The workflow configuration can be found in `.github/workflows/deploy.yml`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# Portfolio
+### Custom Domain
+
+The site is configured to serve from the custom domain [https://carrollmatt.com](https://carrollmatt.com) via the `CNAME` file in the repository root.
