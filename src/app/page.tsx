@@ -31,8 +31,8 @@ const projectBaseData: ProjectBaseData[] = [
   celnaMetadata,
   orriAIMetadata,
   bambuConnectMetadata,
-  memoirMetadata,
   sproutMetadata,
+  memoirMetadata,
   carCamperMetadata,
   wdtToolMetadata,
   magSleeveMetadata

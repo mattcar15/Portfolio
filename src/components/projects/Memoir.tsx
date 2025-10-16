@@ -78,7 +78,7 @@ export const memoirMetadata = {
   description: "Open-source, local-first digital memory for Mac",
   type: "gradient" as const,
   tags: ["LLM", "MCP", "Local"],
-  height: "h-[380px]",
+  height: "h-[380px] md:h-[450px]",
   component: Memoir
 };
 

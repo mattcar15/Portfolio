@@ -67,6 +67,6 @@ export const bambuConnectMetadata = {
   description: "Cross-platform 3D printer management and monitoring",
   type: "gradient" as const,
   tags: ["Python", "3D Printing", "Open Source"],
-  height: "h-[380px] md:h-[400px]",
+  height: "h-[380px] md:h-[500px]",
   component: BambuConnect
 };

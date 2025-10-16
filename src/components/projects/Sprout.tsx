@@ -162,7 +162,7 @@ export const sproutMetadata = {
   description: "Automated hydroponic system with mobile app control",
   type: "gradient" as const,
   tags: ["React Native", "CAD", "IoT"],
-  height: "h-[380px] md:h-[450px]",
+  height: "h-[380px] md:h-[400px]",
   component: Sprout
 };
 
