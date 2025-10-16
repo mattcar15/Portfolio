@@ -23,9 +23,9 @@ type ExperienceSectionProps = {
 
 export function ExperienceSection({ experience, skills, selectedImpact, education }: ExperienceSectionProps) {
   return (
-    <section id="resume" className="min-h-screen py-32 px-6 lg:px-32 pl-20 lg:pl-40">
+    <section id="resume" className="min-h-screen py-32 px-6 lg:px-32 xs:pl-20 sm:pl-10 lg:pl-40">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-6xl md:text-7xl font-bold mb-32 text-black">Experience</h2>
+        <h2 className="text-6xl md:text-7xl font-bold mb-16 text-black">Experience</h2>
 
         <div className="space-y-24 mb-32">
           {experience.map((job, index) => (

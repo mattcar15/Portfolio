@@ -91,7 +91,7 @@ export function SideNav({ sections, activeSection, onNavigate }: SideNavProps) {
   return (
     <>
       {/* Desktop Navigation - Left Side with Glassmorphic Style */}
-      <nav className="pointer-events-none fixed left-4 top-1/2 z-50 hidden -translate-y-1/2 md:inline-flex">
+      <nav className="pointer-events-none fixed left-4 top-1/2 z-30 hidden -translate-y-1/2 lg:inline-flex">
         <div 
           className="pointer-events-auto relative flex flex-col gap-2"
           onMouseEnter={() => setIsMenuHovered(true)}
@@ -179,7 +179,7 @@ export function SideNav({ sections, activeSection, onNavigate }: SideNavProps) {
 
       {/* Mobile Navigation - Bottom */}
       <nav className={`
-        pointer-events-none fixed bottom-0 left-0 right-0 z-50 inline-flex md:hidden
+        pointer-events-none fixed bottom-0 left-0 right-0 z-30 inline-flex lg:hidden
         transition-transform duration-500 ease-in-out
         ${showMobileNav ? 'translate-y-0' : 'translate-y-full'}
       `}>

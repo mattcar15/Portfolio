@@ -28,6 +28,7 @@ type TilePosition = {
 };
 
 const ANIMATION_DURATION = 300;
+const HEADER_HEIGHT = 182;
 
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
   const router = useRouter();
@@ -42,10 +43,12 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
   );
 
   const cardRefs = useRef<Record<number, HTMLButtonElement | null>>({});
+  const measureRef = useRef<HTMLDivElement | null>(null);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [tilePosition, setTilePosition] = useState<TilePosition | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showBody, setShowBody] = useState(false);
+  const [contentHeight, setContentHeight] = useState<number | null>(null);
 
   const handleOpenProject = useCallback(
     (project: Project, element: HTMLButtonElement) => {
@@ -136,6 +139,27 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeProject, handleCloseProject]);
 
+  // Measure content height when active project changes
+  useEffect(() => {
+    if (!activeProject || !measureRef.current) {
+      setContentHeight(null);
+      return;
+    }
+
+    // Wait for next frame to ensure content is rendered
+    requestAnimationFrame(() => {
+      if (measureRef.current) {
+        const bodyHeight = measureRef.current.scrollHeight;
+        const headerHeight = HEADER_HEIGHT; // Fixed header height
+        const totalHeight = headerHeight + bodyHeight;
+        console.log('body height', bodyHeight);
+        console.log('header height', headerHeight);
+        console.log('total height', totalHeight);
+        setContentHeight(totalHeight);
+      }
+    });
+  }, [activeProject]);
+
   const getPopoverStyle = () => {
     if (!tilePosition) return {};
 
@@ -143,8 +167,11 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
     const verticalMargin = window.innerHeight < 800 ? 20 : 32;
 
     const maxWidth = Math.min(window.innerWidth - horizontalMargin * 2, 1040);
+    
+    // Use measured content height if available, otherwise fall back to a reasonable default
+    const idealHeight = contentHeight ?? 800;
     const maxHeight = Math.max(
-      Math.min(window.innerHeight - verticalMargin * 2, 820),
+      Math.min(window.innerHeight - verticalMargin * 2, idealHeight),
       420
     );
 
@@ -171,7 +198,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
     <section id="projects" className="min-h-screen py-32 px-6 lg:px-32">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-6xl md:text-7xl font-bold mb-32 text-black">Projects</h2>
+        <h2 className="text-6xl md:text-7xl font-bold mb-16 text-black">Projects</h2>
 
         <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
           {projects.map((project) => {
@@ -330,7 +357,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                     <div 
                       className="absolute inset-x-0 bottom-0 overflow-hidden transition-all duration-300 ease-out"
                       style={{ 
-                        height: showBody ? 'calc(100% - 200px)' : '0%',
+                        height: showBody ? `calc(100% - ${HEADER_HEIGHT}px)` : '0%',
                         opacity: showBody ? 1 : 0
                       }}
                     >
@@ -372,6 +399,27 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
             </div>
           </div>
         </>
+      )}
+
+      {/* Hidden measurement container - renders body content off-screen to measure height */}
+      {activeProject && (
+        <div 
+          className="fixed pointer-events-none opacity-0"
+          style={{
+            left: '-9999px',
+            top: 0,
+            width: `${Math.min(window.innerWidth - (window.innerWidth < 640 ? 32 : 56), 1040)}px`,
+          }}
+        >
+          <div 
+            ref={measureRef}
+            className="overflow-hidden rounded-t-3xl bg-white text-slate-900"
+          >
+            <div className="px-8 py-8 md:px-12 md:py-12">
+              <activeProject.component />
+            </div>
+          </div>
+        </div>
       )}
     </section>
   );

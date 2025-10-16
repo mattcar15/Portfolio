@@ -4,12 +4,6 @@ export default function Memoir() {
       <p className="text-lg leading-relaxed text-slate-700 md:text-xl">
         Memoir is a Mac app that runs in the background and turns everything you do on your computer into memories. It's an open source and local versioon of Microsoft's Recall.
       </p>
-
-      <div className="text-sm text-slate-500">
-        Interested in learning more about{' '}
-        <strong className="font-semibold text-slate-700">Memoir</strong>? Drop me
-        a line using the contact section below.
-      </div>
     </div>
   );
 }

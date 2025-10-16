@@ -5,12 +5,6 @@ export default function OrriAI() {
         E2E encrypted AI agent platform with proprietary sync mechanism for secure, 
         distributed data management across devices.
       </p>
-
-      <div className="text-sm text-slate-500">
-        Interested in learning more about{' '}
-        <strong className="font-semibold text-slate-700">Orri AI</strong>? Drop me
-        a line using the contact section below.
-      </div>
     </div>
   );
 }

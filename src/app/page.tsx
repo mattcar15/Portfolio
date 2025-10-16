@@ -43,6 +43,11 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => {
+      // Don't update active section when body is position:fixed (project card is open)
+      if (document.body.style.position === 'fixed') {
+        return;
+      }
+      
       const sections = ['intro', 'projects', 'resume', 'contact'];
       const scrollPosition = window.scrollY + 300;
 
