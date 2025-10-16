@@ -137,7 +137,7 @@ export default function CarCamper() {
           </p>
 
           <p>
-            <strong>The Badlands.</strong> The landscape changed dramatically in South Dakota. Buffalo roaming free, otherworldly rock formations, and Wall Drug (iykyk). The stark beauty was unlike anything we'd experienced.
+            <strong>The Badlands.</strong> The landscape changed dramatically in South Dakota. Buffalo roaming free, otherworldly rock formations, and Wall Drug (iykyk). The stark beauty was unlike anything we&apos;d experienced.
           </p>
 
           <p>
@@ -164,7 +164,7 @@ export default function CarCamper() {
           </div>
 
           <p>
-            <strong>Vegas & Grand Canyon.</strong> An impromptu night in Las Vegas—a wild contrast to the natural wonders we'd been seeing. Then the Grand Canyon, where we hiked to the bottom on a scorching hot day. Coming back up in that heat was brutal.
+            <strong>Vegas & Grand Canyon.</strong> An impromptu night in Las Vegas—a wild contrast to the natural wonders we&apos;d been seeing. Then the Grand Canyon, where we hiked to the bottom on a scorching hot day. Coming back up in that heat was brutal.
           </p>
 
           <p>
@@ -172,11 +172,11 @@ export default function CarCamper() {
           </p>
 
           <p>
-            <strong>The Finale.</strong> On our way back to Connecticut, we caught The Lumineers performing live from the pit in rural Pennsylvania. Standing in that crowd, feeling the music, knowing we'd just completed something truly special together—the perfect ending to an incredible month.
+            <strong>The Finale.</strong> On our way back to Connecticut, we caught The Lumineers performing live from the pit in rural Pennsylvania. Standing in that crowd, feeling the music, knowing we&apos;d just completed something truly special together—the perfect ending to an incredible month.
           </p>
 
           <p>
-            The camper conversion made it all possible. Every feature we'd built proved its worth. From cooking in national park parking lots to sleeping under the stars with the hatch open, the car became our home and adventure base.
+            The camper conversion made it all possible. Every feature we&apos;d built proved its worth. From cooking in national park parking lots to sleeping under the stars with the hatch open, the car became our home and adventure base.
           </p>
         </div>
       </div>

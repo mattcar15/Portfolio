@@ -6,11 +6,11 @@ export function IntroSection() {
           Matt Carroll
         </div>
 
-        <p className="text-2xl md:text-3xl text-gray-600 mb-3">Hey, here's a bit about me</p>
+        <p className="text-2xl md:text-3xl text-gray-600 mb-3">Hey, here&apos;s a bit about me</p>
         <div className="w-20 h-1 bg-gradient-to-r from-orange-500 to-blue-600 mb-10 rounded-full" />
 
         <p className="text-xl md:text-2xl text-gray-500 leading-relaxed max-w-3xl">
-          I like building both digital and physical projects. This page is the home of some of the those projects and stuff I've worked on!
+          I like building both digital and physical projects. This page is the home of some of the those projects and stuff I&apos;ve worked on!
         </p>
       </div>
     </section>

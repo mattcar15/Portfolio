@@ -10,7 +10,6 @@ export type ExperienceItem = {
 type ExperienceSectionProps = {
   experience: ExperienceItem[];
   skills: string[];
-  selectedImpact: string[];
   education: {
     institution: string;
     degree: string;
@@ -21,7 +20,7 @@ type ExperienceSectionProps = {
   };
 };
 
-export function ExperienceSection({ experience, skills, selectedImpact, education }: ExperienceSectionProps) {
+export function ExperienceSection({ experience, skills, education }: ExperienceSectionProps) {
   return (
     <section id="resume" className="min-h-screen py-32 px-6 lg:px-32 xs:pl-20 sm:pl-10 lg:pl-40">
       <div className="max-w-6xl mx-auto">

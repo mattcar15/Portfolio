@@ -165,13 +165,6 @@ export default function Home() {
     ]
   };
 
-  const selectedImpact = [
-    "Led DMS major engine release and defined team-wide major-version release guidelines",
-    "Built and operated global multi-region pipelines that standardized deployment patterns across the team",
-    "Mentored and onboarded the majority of new hires, improving time-to-first-PR and service ownership readiness",
-    "Delivered server-opaque end-to-end encrypted sync and an MCP connector factory enabling rapid integrations"
-  ];
-
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (!element) return;
@@ -212,7 +205,6 @@ export default function Home() {
         experience={experience}
         skills={skills}
         education={education}
-        selectedImpact={selectedImpact}
       />
       <ContactSection
         email="mwcarroll12@gmail.com"

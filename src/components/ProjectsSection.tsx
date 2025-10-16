@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ArrowUpRight, X } from 'lucide-react';
 
 export type Project = {
@@ -31,17 +30,6 @@ const ANIMATION_DURATION = 300;
 const HEADER_HEIGHT = 182;
 
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const selectedProjectId = searchParams.get('project');
-
-  const selectedProject = useMemo(
-    () => projects.find((project) => String(project.id) === selectedProjectId),
-    [projects, selectedProjectId]
-  );
-
   const cardRefs = useRef<Record<number, HTMLElement | null>>({});
   const measureRef = useRef<HTMLDivElement | null>(null);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
@@ -81,7 +69,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
     });
 
     return reordered.filter(Boolean);
-  }, [projects, windowSize.width]);
+  }, [projects]);
 
   const handleOpenProject = useCallback(
     (project: Project, element: HTMLElement) => {
@@ -109,12 +97,6 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
       document.body.style.paddingRight = `var(--sbw)`;
       document.body.style.overflow = 'clip';
       
-      // Update URL
-      const params = new URLSearchParams(searchParams.toString());
-      params.set('project', String(project.id));
-      const query = params.toString();
-      router.push(`${pathname}${query ? `?${query}` : ''}`, { scroll: false });
-      
       // Trigger animation after brief delay
       setTimeout(() => {
         setIsAnimating(true);
@@ -125,7 +107,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
         setShowBody(true);
       }, 60);
     },
-    [pathname, router, searchParams]
+    []
   );
 
   const handleCloseProject = useCallback(() => {
@@ -136,12 +118,6 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
     setTimeout(() => {
       setIsAnimating(false);
     }, 50);
-    
-    // Clear URL
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete('project');
-    const query = params.toString();
-    router.push(`${pathname}${query ? `?${query}` : ''}`, { scroll: false });
     
     // Clean up after animation
     setTimeout(() => {
@@ -154,7 +130,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
       setActiveProject(null);
       setTilePosition(null);
     }, ANIMATION_DURATION + 50);
-  }, [pathname, router, searchParams]);
+  }, []);
 
   // Handle escape key
   useEffect(() => {

@@ -130,7 +130,7 @@ export default function MagSleeve() {
         <h3 className="text-3xl font-bold text-slate-900">How It Works</h3>
         <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
           <p>
-            <strong>Fabric Construction.</strong> The sleeve is made from felt that I designed templates for and learned to sew. It's soft enough to protect the laptop while being sturdy enough to hold its shape when mounted vertically.
+            <strong>Fabric Construction.</strong> The sleeve is made from felt that I designed templates for and learned to sew. It&apos;s soft enough to protect the laptop while being sturdy enough to hold its shape when mounted vertically.
           </p>
           
           <p>
@@ -138,11 +138,11 @@ export default function MagSleeve() {
           </p>
 
           <p>
-            <strong>Magnetic Connection.</strong> At the bottom of the sleeve is an alignment piece measured precisely for a 14" MacBook. It positions magnetic USB-C connectors to line up perfectly with the laptop's ports—drop the laptop in and it clicks into place magnetically.
+            <strong>Magnetic Connection.</strong> At the bottom of the sleeve is an alignment piece measured precisely for a 14&quot; MacBook. It positions magnetic USB-C connectors to line up perfectly with the laptop&apos;s ports—drop the laptop in and it clicks into place magnetically.
           </p>
 
           <p>
-            <strong>Cable Management.</strong> The cables from the magnetic connectors pass through a gap in the felt's stitched border at the bottom. My two monitors use USB-C for both power and display, so these two ports handle all my peripherals—keyboard, mouse, monitors, power, ethernet, everything.
+            <strong>Cable Management.</strong> The cables from the magnetic connectors pass through a gap in the felt&apos;s stitched border at the bottom. My two monitors use USB-C for both power and display, so these two ports handle all my peripherals—keyboard, mouse, monitors, power, ethernet, everything.
           </p>
 
           <p>
@@ -164,7 +164,7 @@ export default function MagSleeve() {
           </p>
 
           <p>
-            <strong>Precise Measurements.</strong> The alignment piece at the bottom needed to be machined to precise tolerances. A millimeter off and the magnetic connectors wouldn't align properly. It took multiple prototypes to get it perfect.
+            <strong>Precise Measurements.</strong> The alignment piece at the bottom needed to be machined to precise tolerances. A millimeter off and the magnetic connectors wouldn&apos;t align properly. It took multiple prototypes to get it perfect.
           </p>
 
           <p>
@@ -178,7 +178,7 @@ export default function MagSleeve() {
         <h3 className="text-3xl font-bold text-slate-900">Daily Use</h3>
         <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
           <p>
-            The Mag Sleeve completely changed my desk workflow. Before, I'd have to disconnect two USB-C cables, unplug power, and manage the cable mess every time I wanted to work somewhere else. Now it's effortless: lift the laptop out and go, drop it back in when I return.
+            The Mag Sleeve completely changed my desk workflow. Before, I&apos;d have to disconnect two USB-C cables, unplug power, and manage the cable mess every time I wanted to work somewhere else. Now it&apos;s effortless: lift the laptop out and go, drop it back in when I return.
           </p>
           
           <p>
@@ -186,7 +186,7 @@ export default function MagSleeve() {
           </p>
 
           <p>
-            It's become one of those projects that I use every single day. There's something deeply satisfying about building a solution to your own problem and having it work exactly as intended, improving your daily routine in a tangible way.
+            It&apos;s become one of those projects that I use every single day. There&apos;s something deeply satisfying about building a solution to your own problem and having it work exactly as intended, improving your daily routine in a tangible way.
           </p>
         </div>
       </div>

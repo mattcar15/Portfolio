@@ -61,11 +61,11 @@ export default function OrriAI() {
           </p>
 
           <p>
-            <strong>Finding the Wedge.</strong> We've done extensive user research and identified personal finance as the most promising place to begin. Orri's privacy-first, context-aware agents are uniquely equipped to create tailored financial plans, explain them clearly, and take actions to help enact them on behalf of users.
+            <strong>Finding the Wedge.</strong> We&apos;ve done extensive user research and identified personal finance as the most promising place to begin. Orri&apos;s privacy-first, context-aware agents are uniquely equipped to create tailored financial plans, explain them clearly, and take actions to help enact them on behalf of users.
           </p>
 
           <p>
-            <strong>Mobile First.</strong> With the pivot to consumer, we decided to build out the mobile app side, because the interface fits the consumer use case far better. We've finished our first version of the app and launched a closed beta with early users. We're continuing to add apps and fix issues as they come up, leveraging user feedback to inform feature development.
+            <strong>Mobile First.</strong> With the pivot to consumer, we decided to build out the mobile app side, because the interface fits the consumer use case far better. We&apos;ve finished our first version of the app and launched a closed beta with early users. We&apos;re continuing to add apps and fix issues as they come up, leveraging user feedback to inform feature development.
           </p>
         </div>
       </div>
@@ -75,11 +75,11 @@ export default function OrriAI() {
         <h3 className="text-3xl font-bold text-slate-900">Why We Built This</h3>
         <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
           <p>
-            We recognized the rapid advancements in LLMs and saw a clear gap. These powerful models could understand and generate language but lacked the ability to take meaningful action in a user's digital world.
+            We recognized the rapid advancements in LLMs and saw a clear gap. These powerful models could understand and generate language but lacked the ability to take meaningful action in a user&apos;s digital world.
           </p>
           
           <p>
-            A platform enabling LLMs to securely interact with apps and automate complex tasks was inevitable—and we wanted to build it the right way. We've worked extensively with modern, scalable backend services and understand the benefits of cloud-based applications. This experience enables us to rethink typical web-app design, shifting key data controls back into the hands of the user.
+            A platform enabling LLMs to securely interact with apps and automate complex tasks was inevitable—and we wanted to build it the right way. We&apos;ve worked extensively with modern, scalable backend services and understand the benefits of cloud-based applications. This experience enables us to rethink typical web-app design, shifting key data controls back into the hands of the user.
           </p>
 
           <p>

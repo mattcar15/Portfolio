@@ -10,9 +10,9 @@ export function ContactSection({ email, githubUrl, linkedinUrl }: ContactSection
   return (
     <section id="contact" className="min-h-screen flex items-center justify-center px-6">
       <div className="max-w-5xl text-center">
-        <h2 className="text-6xl md:text-7xl font-bold mb-12 text-black">Let's work together</h2>
+        <h2 className="text-6xl md:text-7xl font-bold mb-12 text-black">Let&apos;s work together</h2>
         <p className="text-xl sm:text-2xl md:text-3xl text-gray-600 mb-16 mx-auto max-w-3xl leading-relaxed">
-          I'm always interested in hearing about new projects and opportunities.
+          I&apos;m always interested in hearing about new projects and opportunities.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-6 mb-16 justify-center">

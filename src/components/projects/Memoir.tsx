@@ -14,11 +14,11 @@ export default function Memoir() {
         <h3 className="text-3xl font-bold text-slate-900">Overview</h3>
         <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
           <p>
-            Memoir is a native Mac app that serves as an open-source variant of Microsoft's Recall. It's designed to be a lightweight background service that provides a beautiful UI for automatically collected and aggregated memories of what you've done on your computer.
+            Memoir is a native Mac app that serves as an open-source variant of Microsoft&apos;s Recall. It&apos;s designed to be a lightweight background service that provides a beautiful UI for automatically collected and aggregated memories of what you&apos;ve done on your computer.
           </p>
           
           <p>
-            The goal is to build a local, deep context of what you're interested in and working on—capturing your digital activities in a privacy-respecting way that keeps all data on your machine.
+            The goal is to build a local, deep context of what you&apos;re interested in and working on—capturing your digital activities in a privacy-respecting way that keeps all data on your machine.
           </p>
         </div>
       </div>
@@ -46,11 +46,11 @@ export default function Memoir() {
         <h3 className="text-3xl font-bold text-slate-900">Future Vision</h3>
         <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
           <p>
-            The long-term vision for Memoir is to connect it as an MCP (Model Context Protocol) server to the user's LLM. This would give AI assistants super-rich context about what you've been working on, what you're interested in, and your workflows—all while maintaining complete privacy.
+            The long-term vision for Memoir is to connect it as an MCP (Model Context Protocol) server to the user&apos;s LLM. This would give AI assistants super-rich context about what you&apos;ve been working on, what you&apos;re interested in, and your workflows—all while maintaining complete privacy.
           </p>
           
           <p>
-            Imagine an AI that truly understands your work patterns, can reference that project you worked on last month, or knows what documentation you were reading when solving a similar problem. That's the future Memoir is building toward—a local-first memory system that empowers your AI agents with context.
+            Imagine an AI that truly understands your work patterns, can reference that project you worked on last month, or knows what documentation you were reading when solving a similar problem. That&apos;s the future Memoir is building toward—a local-first memory system that empowers your AI agents with context.
           </p>
         </div>
       </div>
@@ -64,7 +64,7 @@ export default function Memoir() {
           </p>
           
           <p>
-            By making it open source, we ensure that the community can verify the privacy claims, suggest improvements, and adapt the tool to their specific needs. It's a tool for everyone who wants control over their digital memory.
+            By making it open source, we ensure that the community can verify the privacy claims, suggest improvements, and adapt the tool to their specific needs. It&apos;s a tool for everyone who wants control over their digital memory.
           </p>
         </div>
       </div>
@@ -77,7 +77,7 @@ export const memoirMetadata = {
   title: "Memoir",
   description: "Open-source, local-first digital memory for Mac",
   type: "gradient" as const,
-  tags: ["Swift", "MCP", "Privacy"],
+  tags: ["LLM", "MCP", "Local"],
   height: "h-[380px]",
   component: Memoir
 };

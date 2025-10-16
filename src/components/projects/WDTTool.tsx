@@ -51,7 +51,7 @@ export default function WDTTool() {
           </p>
           
           <p>
-            I decided I'd see how hard it would be to design a good one and package everything needed for a complete product. It became a deep dive into manufacturing, iterative design, and the challenges of scaling something from prototype to production.
+            I decided I&apos;d see how hard it would be to design a good one and package everything needed for a complete product. It became a deep dive into manufacturing, iterative design, and the challenges of scaling something from prototype to production.
           </p>
         </div>
       </div>
@@ -117,7 +117,7 @@ export default function WDTTool() {
           </p>
           
           <p>
-            <strong>Precision Engineering.</strong> The holes for the needles needed to be tightly toleranced—too loose and they'd wobble, too tight and they wouldn't fit. I dialed in dimensions that hold tiny needles perfectly without requiring adhesive.
+            <strong>Precision Engineering.</strong> The holes for the needles needed to be tightly toleranced—too loose and they&apos;d wobble, too tight and they wouldn&apos;t fit. I dialed in dimensions that hold tiny needles perfectly without requiring adhesive.
           </p>
 
           <p>
@@ -143,7 +143,7 @@ export default function WDTTool() {
           </p>
 
           <p>
-            This project taught me what it takes to scale a physical product. It's one thing to make a prototype that works; it's another to make 20 identical units that all work perfectly, look great, and come packaged professionally.
+            This project taught me what it takes to scale a physical product. It&apos;s one thing to make a prototype that works; it&apos;s another to make 20 identical units that all work perfectly, look great, and come packaged professionally.
           </p>
         </div>
       </div>
@@ -153,7 +153,7 @@ export default function WDTTool() {
         <h3 className="text-3xl font-bold text-slate-900">What I Learned</h3>
         <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
           <p>
-            <strong>Physical Iteration is Different.</strong> Coming from software where iteration is instant, physical design requires patience. Each print takes hours, and you can't just ctrl+z a failed print. It forced me to think more carefully before each iteration.
+            <strong>Physical Iteration is Different.</strong> Coming from software where iteration is instant, physical design requires patience. Each print takes hours, and you can&apos;t just ctrl+z a failed print. It forced me to think more carefully before each iteration.
           </p>
           
           <p>

@@ -42,7 +42,7 @@ export default function Celna() {
           </p>
           
           <p>
-            When an LLM tries to call a sensitive method, the user receives a notification and can approve or deny it. Currently, we're finishing the account and settings pages, building tool discovery to recommend connectors a user hasn't enabled but would find helpful, and rolling out managed third-party MCPs so teams don't have to self-host.
+            When an LLM tries to call a sensitive method, the user receives a notification and can approve or deny it. Currently, we&apos;re finishing the account and settings pages, building tool discovery to recommend connectors a user hasn&apos;t enabled but would find helpful, and rolling out managed third-party MCPs so teams don&apos;t have to self-host.
           </p>
         </div>
       </div>

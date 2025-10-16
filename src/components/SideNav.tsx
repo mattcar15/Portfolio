@@ -139,7 +139,6 @@ export function SideNav({ sections, activeSection, onNavigate }: SideNavProps) {
           
           {sections.map((section) => {
             const isActive = activeSection === section.id;
-            const isDisplayed = displaySection === section.id;
             const isHovered = hoveredSection === section.id;
             const Icon = iconMap[section.id as keyof typeof iconMap] || Home;
             const showLabel = isHovered;
@@ -216,7 +215,6 @@ export function SideNav({ sections, activeSection, onNavigate }: SideNavProps) {
           
           {sections.map((section) => {
             const isActive = activeSection === section.id;
-            const isDisplayed = displaySection === section.id;
             const Icon = iconMap[section.id as keyof typeof iconMap] || Home;
 
             return (
