@@ -12,7 +12,7 @@ export default function OrriAI() {
               controls
               preload="metadata"
             >
-              <source src="/src/components/projects/assets/OrriAI/orri_ai_mobile_demo.mp4" type="video/mp4" />
+              <source src="/videos/OrriAI/orri_ai_mobile_demo.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
@@ -26,7 +26,7 @@ export default function OrriAI() {
               controls
               preload="metadata"
             >
-              <source src="/src/components/projects/assets/OrriAI/orri_ai_web_demo.mp4" type="video/mp4" />
+              <source src="/videos/OrriAI/orri_ai_web_demo.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>

@@ -61,15 +61,17 @@ export default function MagSleeve() {
       {/* Demo Video */}
       <div className="space-y-4">
         <h3 className="text-2xl font-bold text-slate-900">See It In Action</h3>
-        <div className="relative w-full aspect-video overflow-hidden rounded-3xl bg-slate-100">
-          <video
-            className="w-full h-full object-cover"
-            controls
-            preload="metadata"
-          >
-            <source src="/src/components/projects/assets/MagSleeve/mag_sleeve_demo.mov" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+        <div className="flex justify-center">
+          <div className="relative w-full max-w-md aspect-[9/16] overflow-hidden rounded-3xl bg-slate-100">
+            <video
+              className="w-full h-full object-contain"
+              controls
+              preload="metadata"
+            >
+              <source src="/videos/MagSleeve/mag_sleeve_demo.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
         </div>
       </div>
 

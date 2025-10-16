@@ -10,7 +10,7 @@ export default function Celna() {
           controls
           preload="metadata"
         >
-          <source src="/src/components/projects/assets/Celna/celna_demo.mp4" type="video/mp4" />
+          <source src="/videos/Celna/celna_demo.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
