@@ -1,4 +1,4 @@
-name: Deploy Next.js to GitHub Pages
+name: Deploy Next.js to GitHub Pages (Yarn / Node 22.4.1)
 
 on:
   push:
@@ -20,12 +20,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 20, cache: "npm" } # or pnpm/yarn
-      - run: npm ci
-      - run: npm run build # creates ./out (because output:'export')
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with: { path: "./out" }
+        with:
+          node-version: 22.4.1
+          cache: "yarn"
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile
+      - run: yarn build # → outputs ./out
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
 
   deploy:
     needs: build
@@ -34,6 +37,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deploy
+      - id: deploy
         uses: actions/deploy-pages@v4
