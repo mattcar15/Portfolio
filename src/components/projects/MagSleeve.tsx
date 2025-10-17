@@ -76,7 +76,7 @@ export default function MagSleeve() {
       <div className="space-y-4">
         <h3 className="text-2xl font-bold text-slate-900">Design Details</h3>
         <p className="text-base text-slate-600 italic">
-          I wanted the design to look clean like felt carrying cases I'd seen, while still functional allowing the computer to not overheat and simply dropped in and slid out.
+          I wanted the design to look clean like felt carrying cases I&apos;d seen, while still functional allowing the computer to not overheat and simply dropped in and slid out.
         </p>
         
         <Carousel

@@ -28,7 +28,7 @@ export default function Memoir() {
         <h3 className="text-3xl font-bold text-slate-900">Current Progress</h3>
         <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
           <p>
-            I have a working MVP that I've been using but right now the processing is too much to be running 24/7 when on battery. I also have the frontend UI MCP going and working, but need to transition the setup to a native app.
+            I have a working MVP that I&apos;ve been using but right now the processing is too much to be running 24/7 when on battery. I also have the frontend UI MCP going and working, but need to transition the setup to a native app.
           </p>
         </div>
       </div>
@@ -38,7 +38,7 @@ export default function Memoir() {
         <h3 className="text-3xl font-bold text-slate-900">Coming Soon</h3>
         <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
           <p>
-            Currently, I'm refining the memory collection system to be lihgter weight so that it can track more granular activities to build richer and more accurate memories. After this, I'll be refreshing the frontend to take advantage of the new system and then will be releasing the project!
+            Currently, I&apos;m refining the memory collection system to be lihgter weight so that it can track more granular activities to build richer and more accurate memories. After this, I&apos;ll be refreshing the frontend to take advantage of the new system and then will be releasing the project!
           </p>
 
           <p>
