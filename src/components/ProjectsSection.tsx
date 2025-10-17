@@ -38,17 +38,30 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
   const [showBody, setShowBody] = useState(false);
   const [contentHeight, setContentHeight] = useState<number | null>(null);
   const [windowSize, setWindowSize] = useState({ 
-    width: typeof window !== 'undefined' ? window.innerWidth : 0, 
-    height: typeof window !== 'undefined' ? window.innerHeight : 0 
+    width: 0, 
+    height: 0 
   });
   const [scrollProgress, setScrollProgress] = useState(0);
   const bodyScrollRef = useRef<HTMLDivElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  const [isGrowthPhase, setIsGrowthPhase] = useState(true); // true = growing/collapsing, false = scrolling
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Initialize window size on mount to avoid hydration mismatch
+  useEffect(() => {
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight
+    });
+    setIsMounted(true);
+  }, []);
 
   // Reorder projects for column layout to achieve left-to-right, top-to-bottom visual order
   const reorderedProjects = useMemo(() => {
     const getColumnCount = () => {
-      if (typeof window === 'undefined') return 3;
-      const width = window.innerWidth;
+      // Use a safe default of 3 columns until mounted
+      if (!isMounted || windowSize.width === 0) return 3;
+      const width = windowSize.width;
       if (width < 768) return 1;
       if (width < 1024) return 2;
       return 3;
@@ -69,7 +82,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
     });
 
     return reordered.filter(Boolean);
-  }, [projects]);
+  }, [projects, windowSize.width, isMounted]);
 
   const handleOpenProject = useCallback(
     (project: Project, element: HTMLElement) => {
@@ -84,6 +97,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
       setIsAnimating(false);
       setShowBody(false);
       setScrollProgress(0);
+      setIsGrowthPhase(true);
       
       // Lock scroll and hide scrollbar
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -194,39 +208,83 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, [activeProject]);
 
-  // Handle scroll in body section
+  // Handle wheel events for growth phase and transition to scroll phase
+  useEffect(() => {
+    const modalElement = modalRef.current;
+    const bodyScrollElement = bodyScrollRef.current;
+    if (!modalElement || !bodyScrollElement || !showBody) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (isGrowthPhase) {
+        // Growth phase: adjust scroll progress instead of scrolling
+        e.preventDefault();
+        
+        setScrollProgress((prev) => {
+          const delta = e.deltaY / 100; // Normalize scroll speed
+          const newProgress = Math.max(0, Math.min(1, prev + delta * 0.5));
+          
+          // Transition to scroll phase when fully collapsed
+          if (newProgress >= 1 && delta > 0) {
+            setIsGrowthPhase(false);
+          }
+          
+          return newProgress;
+        });
+      } else {
+        // Scroll phase: check if we need to transition back to growth phase
+        const scrollTop = bodyScrollElement.scrollTop;
+        if (scrollTop === 0 && e.deltaY < 0) {
+          // Scrolling up at the top, transition back to growth phase
+          e.preventDefault();
+          setIsGrowthPhase(true);
+        }
+      }
+    };
+
+    modalElement.addEventListener('wheel', handleWheel, { passive: false });
+    return () => modalElement.removeEventListener('wheel', handleWheel);
+  }, [showBody, isGrowthPhase]);
+
+  // Handle scroll in body section during scroll phase
   useEffect(() => {
     const bodyScrollElement = bodyScrollRef.current;
-    if (!bodyScrollElement || !showBody) return;
+    if (!bodyScrollElement || !showBody || isGrowthPhase) return;
 
     const handleScroll = () => {
       const scrollTop = bodyScrollElement.scrollTop;
-      // Normalize scroll progress from 0 to 1 over first 100px of scroll
-      const progress = Math.min(scrollTop / 100, 1);
-      setScrollProgress(progress);
+      
+      // If scrolled to top, maintain collapsed state
+      if (scrollTop === 0) {
+        // Keep progress at 1 when at top in scroll phase
+        setScrollProgress(1);
+      }
     };
 
     bodyScrollElement.addEventListener('scroll', handleScroll);
     return () => bodyScrollElement.removeEventListener('scroll', handleScroll);
-  }, [showBody]);
+  }, [showBody, isGrowthPhase]);
 
   const getPopoverStyle = () => {
     if (!tilePosition) return {};
 
-    const horizontalMargin = windowSize.width < 640 ? 16 : 28;
-    const verticalMargin = windowSize.height < 800 ? 20 : 32;
+    // Use safe defaults if window size hasn't been measured yet
+    const safeWidth = windowSize.width || (typeof window !== 'undefined' ? window.innerWidth : 1024);
+    const safeHeight = windowSize.height || (typeof window !== 'undefined' ? window.innerHeight : 768);
 
-    const maxWidth = Math.min(windowSize.width - horizontalMargin * 2, 1040);
+    const horizontalMargin = safeWidth < 640 ? 16 : 28;
+    const verticalMargin = safeHeight < 800 ? 20 : 32;
+
+    const maxWidth = Math.min(safeWidth - horizontalMargin * 2, 1040);
     
     // Use measured content height if available, otherwise fall back to a reasonable default
     const idealHeight = contentHeight ?? 800;
     const maxHeight = Math.max(
-      Math.min(windowSize.height - verticalMargin * 2, idealHeight),
+      Math.min(safeHeight - verticalMargin * 2, idealHeight),
       420
     );
 
-    const targetLeft = (windowSize.width - maxWidth) / 2;
-    const targetTop = Math.max(verticalMargin, (windowSize.height - maxHeight) / 2);
+    const targetLeft = (safeWidth - maxWidth) / 2;
+    const targetTop = Math.max(verticalMargin, (safeHeight - maxHeight) / 2);
 
     if (!isAnimating) {
       return {
@@ -327,6 +385,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
           />
           
           <div
+            ref={modalRef}
             className="fixed z-50 transition-all duration-300 ease-out overflow-hidden rounded-3xl"
             style={getPopoverStyle()}
           >
@@ -362,24 +421,28 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                     <div className="flex flex-col h-full">
                       {/* Spacer that pushes content down when body is hidden */}
                       <div 
-                        className="transition-all duration-300 ease-out"
                         style={{ 
-                          flex: showBody ? '0 0 0px' : '1 1 0%'
+                          flex: showBody ? '0 0 0px' : '1 1 0%',
+                          transition: 'flex 0.3s ease-out'
                         }}
                       />
                       
                       <div 
-                        className="text-white flex-shrink-0 transition-all duration-300"
+                        className="text-white flex-shrink-0 px-10 py-10"
                         style={{ 
-                          padding: `${40 - scrollProgress * 24}px 40px`
+                          paddingTop: `${40 - scrollProgress * 24}px`,
+                          paddingBottom: `${40 - scrollProgress * 24}px`,
+                          willChange: scrollProgress > 0 && scrollProgress < 1 ? 'padding' : 'auto'
                         }}
                       >
                         <div 
-                          className="flex gap-2 mb-6 flex-wrap transition-all duration-300 overflow-hidden"
+                          className="flex gap-2 mb-6 flex-wrap overflow-hidden origin-top"
                           style={{
-                            maxHeight: `${48 - scrollProgress * 48}px`,
+                            transform: `scaleY(${1 - scrollProgress})`,
                             opacity: 1 - scrollProgress,
-                            marginBottom: `${24 - scrollProgress * 24}px`
+                            height: scrollProgress >= 0.99 ? '0px' : 'auto',
+                            marginBottom: scrollProgress >= 0.99 ? '0px' : '24px',
+                            willChange: scrollProgress > 0 && scrollProgress < 1 ? 'transform, opacity' : 'auto'
                           }}
                         >
                           {activeProject.tags.map((tag, i) => (
@@ -393,21 +456,25 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                         </div>
 
                         <h3 
-                          className="font-semibold text-white transition-all duration-300"
+                          className="font-semibold text-white origin-top"
                           style={{ 
                             marginBottom: showBody ? '0' : '1rem',
-                            fontSize: `${(windowSize.width >= 768 ? 48 : 36) - scrollProgress * 12}px`
+                            fontSize: `${(windowSize.width || 1024) >= 768 ? 48 : 36}px`,
+                            transform: `scale(${1 - (scrollProgress * 0.25)})`,
+                            transformOrigin: 'left top',
+                            willChange: scrollProgress > 0 && scrollProgress < 1 ? 'transform' : 'auto'
                           }}
                         >
                           {activeProject.title}
                         </h3>
 
                         <div 
-                          className="overflow-hidden transition-all duration-300 ease-out"
+                          className="overflow-hidden"
                           style={{ 
                             maxHeight: showBody ? '0px' : '500px',
                             opacity: showBody ? 0 : 1,
-                            marginTop: showBody ? '0' : '0'
+                            marginTop: showBody ? '0' : '0',
+                            transition: 'max-height 0.3s ease-out, opacity 0.3s ease-out'
                           }}
                         >
                           <p className="text-lg text-white/80 leading-relaxed mb-10 mt-4">
@@ -423,16 +490,17 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                     </div>
 
                     <div 
-                      className="absolute inset-x-0 bottom-0 overflow-hidden transition-all duration-300 ease-out"
+                      className="absolute inset-x-0 bottom-0 overflow-hidden"
                       style={{ 
                         height: showBody ? `calc(100% - ${HEADER_HEIGHT - scrollProgress * 96}px)` : '0%',
-                        opacity: showBody ? 1 : 0
+                        opacity: showBody ? 1 : 0,
+                        transition: (isGrowthPhase && scrollProgress > 0) ? 'none' : 'height 0.3s ease-out, opacity 0.3s ease-out'
                       }}
                     >
                       <div className="h-full overflow-hidden rounded-t-3xl bg-white text-slate-900 shadow-[0_-12px_30px_rgba(15,23,42,0.08)]">
                         <div 
                           ref={bodyScrollRef}
-                          className="h-full overflow-y-auto px-8 py-8 md:px-12 md:py-12"
+                          className={`h-full px-8 py-8 md:px-12 md:py-12 ${isGrowthPhase ? 'overflow-hidden' : 'overflow-y-auto'}`}
                         >
                           <activeProject.component />
                         </div>
@@ -479,7 +547,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
           style={{
             left: '-9999px',
             top: 0,
-            width: `${Math.min(windowSize.width - (windowSize.width < 640 ? 32 : 56), 1040)}px`,
+            width: `${Math.min((windowSize.width || 1024) - ((windowSize.width || 1024) < 640 ? 32 : 56), 1040)}px`,
           }}
         >
           <div 
