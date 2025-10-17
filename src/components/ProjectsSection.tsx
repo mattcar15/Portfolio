@@ -35,17 +35,18 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [tilePosition, setTilePosition] = useState<TilePosition | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false); // Controls card size
   const [showBody, setShowBody] = useState(false);
   const [contentHeight, setContentHeight] = useState<number | null>(null);
   const [windowSize, setWindowSize] = useState({ 
     width: 0, 
     height: 0 
   });
-  const [scrollProgress, setScrollProgress] = useState(0);
   const bodyScrollRef = useRef<HTMLDivElement | null>(null);
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const [isGrowthPhase, setIsGrowthPhase] = useState(true); // true = growing/collapsing, false = scrolling
   const [isMounted, setIsMounted] = useState(false);
+  const [modalDimensions, setModalDimensions] = useState({ width: 0, height: 0 });
+  const [lockedContentWidth, setLockedContentWidth] = useState<number | null>(null);
 
   // Initialize window size on mount to avoid hydration mismatch
   useEffect(() => {
@@ -93,11 +94,12 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
         width: rect.width,
         height: rect.height
       });
+      setLockedContentWidth(rect.width);
+      
       setActiveProject(project);
       setIsAnimating(false);
+      setIsExpanded(false);
       setShowBody(false);
-      setScrollProgress(0);
-      setIsGrowthPhase(true);
       
       // Lock scroll and hide scrollbar
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -114,6 +116,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
       // Trigger animation after brief delay
       setTimeout(() => {
         setIsAnimating(true);
+        setIsExpanded(true);
       }, 10);
       
       // Trigger body slide-in after card starts expanding
@@ -125,15 +128,20 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
   );
 
   const handleCloseProject = useCallback(() => {
-    // Hide body first
+    // Hide body first - this triggers white overlay to slide down
     setShowBody(false);
     
-    // Then trigger the shrink animation after a brief delay
+    // Trigger card shrink almost immediately so it happens simultaneously with white overlay sliding down
     setTimeout(() => {
-      setIsAnimating(false);
+      setIsExpanded(false);
     }, 50);
     
-    // Clean up after animation
+    // Hide content after white overlay has slid down (0.3s)
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 300);
+    
+    // Clean up after all animations complete
     setTimeout(() => {
       // Restore scroll position and body styles
       const scrollY = Number(document.body.dataset.scrollY || 0);
@@ -143,8 +151,9 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
       
       setActiveProject(null);
       setTilePosition(null);
-    }, ANIMATION_DURATION + 50);
-  }, []);
+      setLockedContentWidth(null);
+    }, 300 + ANIMATION_DURATION + 50);
+  }, [activeProject]);
 
   // Handle escape key
   useEffect(() => {
@@ -200,6 +209,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
             width: rect.width,
             height: rect.height
           });
+          setLockedContentWidth(rect.width);
         }
       }
     };
@@ -208,61 +218,27 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, [activeProject]);
 
-  // Handle wheel events for growth phase and transition to scroll phase
+  // Track modal dimensions for hole punch effect
   useEffect(() => {
-    const modalElement = modalRef.current;
-    const bodyScrollElement = bodyScrollRef.current;
-    if (!modalElement || !bodyScrollElement || !showBody) return;
+    if (!modalRef.current || !isExpanded) return;
 
-    const handleWheel = (e: WheelEvent) => {
-      if (isGrowthPhase) {
-        // Growth phase: adjust scroll progress instead of scrolling
-        e.preventDefault();
-        
-        setScrollProgress((prev) => {
-          const delta = e.deltaY / 100; // Normalize scroll speed
-          const newProgress = Math.max(0, Math.min(1, prev + delta * 0.5));
-          
-          // Transition to scroll phase when fully collapsed
-          if (newProgress >= 1 && delta > 0) {
-            setIsGrowthPhase(false);
-          }
-          
-          return newProgress;
-        });
-      } else {
-        // Scroll phase: check if we need to transition back to growth phase
-        const scrollTop = bodyScrollElement.scrollTop;
-        if (scrollTop === 0 && e.deltaY < 0) {
-          // Scrolling up at the top, transition back to growth phase
-          e.preventDefault();
-          setIsGrowthPhase(true);
-        }
+    const updateModalDimensions = () => {
+      if (modalRef.current) {
+        const rect = modalRef.current.getBoundingClientRect();
+        setModalDimensions({ width: rect.width, height: rect.height });
       }
     };
 
-    modalElement.addEventListener('wheel', handleWheel, { passive: false });
-    return () => modalElement.removeEventListener('wheel', handleWheel);
-  }, [showBody, isGrowthPhase]);
+    // Initial measurement
+    updateModalDimensions();
 
-  // Handle scroll in body section during scroll phase
-  useEffect(() => {
-    const bodyScrollElement = bodyScrollRef.current;
-    if (!bodyScrollElement || !showBody || isGrowthPhase) return;
+    // Update on animation frame for smooth transitions
+    const animationId = requestAnimationFrame(updateModalDimensions);
 
-    const handleScroll = () => {
-      const scrollTop = bodyScrollElement.scrollTop;
-      
-      // If scrolled to top, maintain collapsed state
-      if (scrollTop === 0) {
-        // Keep progress at 1 when at top in scroll phase
-        setScrollProgress(1);
-      }
-    };
+    return () => cancelAnimationFrame(animationId);
+  }, [isExpanded, windowSize]);
 
-    bodyScrollElement.addEventListener('scroll', handleScroll);
-    return () => bodyScrollElement.removeEventListener('scroll', handleScroll);
-  }, [showBody, isGrowthPhase]);
+  // No longer needed - removed growth phase scroll behavior
 
   const getPopoverStyle = () => {
     if (!tilePosition) return {};
@@ -286,7 +262,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
     const targetLeft = (safeWidth - maxWidth) / 2;
     const targetTop = Math.max(verticalMargin, (safeHeight - maxHeight) / 2);
 
-    if (!isAnimating) {
+    if (!isExpanded) {
       return {
         top: `${tilePosition.top}px`,
         left: `${tilePosition.left}px`,
@@ -315,7 +291,6 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
               stops.length >= 2
                 ? { background: `linear-gradient(135deg, ${stops.join(', ')})` }
                 : undefined;
-            
             return (
               <div key={project.id}>
                 {activeProject?.id === project.id ? (
@@ -357,7 +332,9 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
 
                       <div className="group/view inline-flex items-center gap-2 text-white font-semibold transition-transform duration-500">
                         <span className="transition-transform duration-500">View details</span>
-                        <ArrowUpRight className="w-5 h-5 transition-transform duration-500 group-hover/view:translate-x-1" />
+                        <ArrowUpRight
+                          className="w-5 h-5 transition-transform duration-500 group-hover/view:translate-x-1"
+                        />
                       </div>
                     </div>
                   </button>
@@ -372,13 +349,14 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
       {activeProject && tilePosition && (
         <>
           <div 
-            className="fixed top-0 left-0 z-40 transition-opacity duration-300"
+            className="fixed top-0 left-0 z-40 transition-opacity"
             style={{
+              transitionDuration: '300ms',
               width: '100vw',
               height: '100vh',
               backgroundColor: 'rgba(15, 23, 42, 0.6)',
               backdropFilter: 'blur(8px)',
-              opacity: isAnimating ? 1 : 0
+              opacity: isExpanded ? 1 : 0
             }}
             onClick={handleCloseProject}
             aria-label="Close modal"
@@ -386,10 +364,13 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
           
           <div
             ref={modalRef}
-            className="fixed z-50 transition-all duration-300 ease-out overflow-hidden rounded-3xl"
-            style={getPopoverStyle()}
+            className="fixed z-50 transition-all ease-out overflow-hidden rounded-3xl"
+            style={{
+              ...getPopoverStyle(),
+              transitionDuration: '300ms'
+            }}
           >
-            <div className="w-full h-full relative flex flex-col">
+            <div className="w-full h-full relative flex flex-col overflow-hidden">
               {/* Gradient background */}
               <div
                 className={`absolute inset-0 pointer-events-none ${
@@ -404,15 +385,23 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                 }
               />
               
-              {/* Content */}
-              <div className="relative h-full flex flex-col">
+              {/* Content - fixed width to prevent reflow during animation */}
+              <div 
+                className="relative h-full flex flex-col mx-auto"
+                style={{
+                  width: '100%'
+                }}
+              >
                 {isAnimating && (
                   <>
                     <button
                       type="button"
                       onClick={handleCloseProject}
-                      className="absolute top-6 right-6 z-10 rounded-full border border-white/40 bg-white/60 p-2 text-slate-800 transition-opacity duration-300 hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white/40"
-                      style={{ opacity: showBody ? 1 : 0 }}
+                      className="absolute top-6 right-6 z-10 rounded-full border border-white/40 bg-white/60 p-2 text-slate-800 transition-opacity hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-white/40"
+                      style={{ 
+                        opacity: showBody ? 1 : 0,
+                        transition: 'opacity 0.6s ease-out 0.8s'
+                      }}
                     >
                       <span className="sr-only">Close</span>
                       <X className="h-5 w-5" />
@@ -430,21 +419,13 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                       <div 
                         className="text-white flex-shrink-0 px-10 py-10"
                         style={{ 
-                          paddingTop: `${40 - scrollProgress * 24}px`,
-                          paddingBottom: `${40 - scrollProgress * 24}px`,
-                          willChange: scrollProgress > 0 && scrollProgress < 1 ? 'padding' : 'auto'
+                          opacity: showBody ? 0 : 1,
+                          transition: 'opacity 0.8s ease-out',
+                          width: lockedContentWidth ? `${lockedContentWidth}px` : '100%',
+                          alignSelf: 'flex-start'
                         }}
                       >
-                        <div 
-                          className="flex gap-2 mb-6 flex-wrap overflow-hidden origin-top"
-                          style={{
-                            transform: `scaleY(${1 - scrollProgress})`,
-                            opacity: 1 - scrollProgress,
-                            height: scrollProgress >= 0.99 ? '0px' : 'auto',
-                            marginBottom: scrollProgress >= 0.99 ? '0px' : '24px',
-                            willChange: scrollProgress > 0 && scrollProgress < 1 ? 'transform, opacity' : 'auto'
-                          }}
-                        >
+                        <div className="flex gap-2 mb-6 flex-wrap">
                           {activeProject.tags.map((tag, i) => (
                             <span
                               key={i}
@@ -456,27 +437,15 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                         </div>
 
                         <h3 
-                          className="font-semibold text-white origin-top"
+                          className="font-semibold text-white mb-4"
                           style={{ 
-                            marginBottom: showBody ? '0' : '1rem',
-                            fontSize: `${(windowSize.width || 1024) >= 768 ? 48 : 36}px`,
-                            transform: `scale(${1 - (scrollProgress * 0.25)})`,
-                            transformOrigin: 'left top',
-                            willChange: scrollProgress > 0 && scrollProgress < 1 ? 'transform' : 'auto'
+                            fontSize: `${(windowSize.width || 1024) >= 768 ? 48 : 36}px`
                           }}
                         >
                           {activeProject.title}
                         </h3>
 
-                        <div 
-                          className="overflow-hidden"
-                          style={{ 
-                            maxHeight: showBody ? '0px' : '500px',
-                            opacity: showBody ? 0 : 1,
-                            marginTop: showBody ? '0' : '0',
-                            transition: 'max-height 0.3s ease-out, opacity 0.3s ease-out'
-                          }}
-                        >
+                        <div className="overflow-hidden">
                           <p className="text-lg text-white/80 leading-relaxed mb-10 mt-4">
                             {activeProject.description}
                           </p>
@@ -492,17 +461,59 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                     <div 
                       className="absolute inset-x-0 bottom-0 overflow-hidden"
                       style={{ 
-                        height: showBody ? `calc(100% - ${HEADER_HEIGHT - scrollProgress * 96}px)` : '0%',
-                        opacity: showBody ? 1 : 0,
-                        transition: (isGrowthPhase && scrollProgress > 0) ? 'none' : 'height 0.3s ease-out, opacity 0.3s ease-out'
+                        height: showBody ? '100%' : '0%',
+                        transition: 'height 0.3s ease-out',
+                        pointerEvents: showBody ? 'auto' : 'none'
                       }}
                     >
-                      <div className="h-full overflow-hidden rounded-t-3xl bg-white text-slate-900 shadow-[0_-12px_30px_rgba(15,23,42,0.08)]">
+                      <div className="h-full overflow-hidden rounded-3xl bg-white text-slate-900 shadow-[0_-12px_30px_rgba(15,23,42,0.08)]">
                         <div 
                           ref={bodyScrollRef}
-                          className={`h-full px-8 py-8 md:px-12 md:py-12 ${isGrowthPhase ? 'overflow-hidden' : 'overflow-y-auto'}`}
+                          className="h-full overflow-y-auto"
+                          style={{
+                            opacity: showBody ? 1 : 0,
+                            transition: 'opacity 0.6s ease-out 0.4s'
+                          }}
                         >
-                          <activeProject.component />
+                          {/* Hole punch title - positioned to align gradient with modal background */}
+                          <div 
+                            className="relative px-10 py-10 pb-8"
+                          >
+                            <h3 
+                              className="font-semibold relative"
+                              style={{ 
+                                fontSize: `${(windowSize.width || 1024) >= 768 ? 48 : 36}px`
+                              }}
+                            >
+                              {/* Gradient background layer that matches modal's gradient position */}
+                              <span 
+                                className="absolute inset-0 pointer-events-none"
+                                style={{
+                                  background: activeProject.gradientStops && activeProject.gradientStops.length >= 2
+                                    ? `linear-gradient(135deg, ${activeProject.gradientStops.join(', ')})`
+                                    : undefined,
+                                  backgroundSize: modalDimensions.width > 0 
+                                    ? `${modalDimensions.width}px ${modalDimensions.height}px`
+                                    : '100% 100%',
+                                  backgroundPosition: '-40px -40px',
+                                  WebkitBackgroundClip: 'text',
+                                  backgroundClip: 'text',
+                                  WebkitTextFillColor: 'transparent',
+                                  color: 'transparent',
+                                }}
+                              >
+                                {activeProject.title}
+                              </span>
+                              {/* Hidden text for proper layout */}
+                              <span className="invisible">
+                                {activeProject.title}
+                              </span>
+                            </h3>
+                          </div>
+
+                          <div className="px-4 sm:px-10 pb-10">
+                            <activeProject.component />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -510,7 +521,13 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
                 )}
 
                 {!isAnimating && (
-                  <div className="p-10 flex flex-col justify-end h-full text-white">
+                  <div 
+                    className="p-10 flex flex-col justify-end h-full text-white"
+                    style={{
+                      width: lockedContentWidth ? `${lockedContentWidth}px` : '100%',
+                      alignSelf: 'flex-start'
+                    }}
+                  >
                     <div className="flex gap-2 mb-6 flex-wrap">
                       {activeProject.tags.map((tag, i) => (
                         <span
@@ -547,7 +564,10 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
           style={{
             left: '-9999px',
             top: 0,
-            width: `${Math.min((windowSize.width || 1024) - ((windowSize.width || 1024) < 640 ? 32 : 56), 1040)}px`,
+            width: `${Math.min(
+              (windowSize.width || 1024) - ((windowSize.width || 1024) < 640 ? 32 : 56),
+              1040
+            )}px`,
           }}
         >
           <div 

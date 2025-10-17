@@ -14,7 +14,7 @@ export default function Memoir() {
         <h3 className="text-3xl font-bold text-slate-900">Overview</h3>
         <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
           <p>
-            Memoir is a native Mac app that serves as an open-source variant of Microsoft&apos;s Recall. It&apos;s designed to be a lightweight background service that provides a beautiful UI for automatically collected and aggregated memories of what you&apos;ve done on your computer.
+            Memoir is a native Mac app that serves as an open-source take on Microsoft&apos;s Recall. It&apos;s designed to be a background service that provides a clean timeline UI for automatically collecting and aggregating memories of what you&apos;ve done on your computer.
           </p>
           
           <p>
@@ -23,48 +23,26 @@ export default function Memoir() {
         </div>
       </div>
 
-      {/* Technical Approach Section */}
+      {/* Current Progress Section */}
       <div className="space-y-6">
-        <h3 className="text-3xl font-bold text-slate-900">Technical Approach</h3>
+        <h3 className="text-3xl font-bold text-slate-900">Current Progress</h3>
         <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
           <p>
-            <strong>Native Performance.</strong> Built with Swift for macOS, Memoir runs efficiently in the background with minimal system overhead. It captures context without impacting your workflow or battery life.
-          </p>
-          
-          <p>
-            <strong>Privacy First.</strong> Unlike cloud-based solutions, all your data stays local on your machine. No telemetry, no external servers, no data leaving your control. Your memories are yours alone.
-          </p>
-
-          <p>
-            <strong>Smart Aggregation.</strong> Rather than just taking screenshots, Memoir intelligently aggregates activity into meaningful memories—understanding what you were working on, what apps you used, and providing an intuitive way to search and navigate your digital history.
+            I have a working MVP that I've been using but right now the processing is too much to be running 24/7 when on battery. I also have the frontend UI MCP going and working, but need to transition the setup to a native app.
           </p>
         </div>
       </div>
 
-      {/* Future Vision Section */}
+      {/* Coming Soon Section */}
       <div className="space-y-6">
-        <h3 className="text-3xl font-bold text-slate-900">Future Vision</h3>
+        <h3 className="text-3xl font-bold text-slate-900">Coming Soon</h3>
         <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
           <p>
-            The long-term vision for Memoir is to connect it as an MCP (Model Context Protocol) server to the user&apos;s LLM. This would give AI assistants super-rich context about what you&apos;ve been working on, what you&apos;re interested in, and your workflows—all while maintaining complete privacy.
+            Currently, I'm refining the memory collection system to be lihgter weight so that it can track more granular activities to build richer and more accurate memories. After this, I'll be refreshing the frontend to take advantage of the new system and then will be releasing the project!
           </p>
-          
-          <p>
-            Imagine an AI that truly understands your work patterns, can reference that project you worked on last month, or knows what documentation you were reading when solving a similar problem. That&apos;s the future Memoir is building toward—a local-first memory system that empowers your AI agents with context.
-          </p>
-        </div>
-      </div>
 
-      {/* Open Source Section */}
-      <div className="space-y-6">
-        <h3 className="text-3xl font-bold text-slate-900">Open Source</h3>
-        <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
           <p>
-            Memoir is being built in the open. The code will be available on GitHub for anyone to audit, modify, or contribute to. For a tool that captures everything you do on your computer, transparency and trust are paramount.
-          </p>
-          
-          <p>
-            By making it open source, we ensure that the community can verify the privacy claims, suggest improvements, and adapt the tool to their specific needs. It&apos;s a tool for everyone who wants control over their digital memory.
+            The long-term vision for Memoir is to connect it as an MCP (Model Context Protocol) server to the user&apos;s LLM. This will give AI assistants rich context about what you&apos;ve been working on, what you&apos;re interested in, and your workflows—all while maintaining ownership of your data.
           </p>
         </div>
       </div>

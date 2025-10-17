@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import type { StaticImageData } from 'next/image';
 import Autoplay from "embla-carousel-autoplay"
 import {
   Carousel,
@@ -16,10 +17,10 @@ import appControls from './assets/Sprout/app_controls.png';
 import appPlants from './assets/Sprout/app_plants.png';
 import presentation from './assets/Sprout/presentation.jpg';
 
-const images = [
+const images: { src: StaticImageData; caption: string }[] = [
+  { src: presentation, caption: "Project Presentation" },
   { src: appControls, caption: "App Controls Interface" },
   { src: appPlants, caption: "Plant Management Screen" },
-  { src: presentation, caption: "Project Presentation" },
 ];
 
 export default function Sprout() {
@@ -53,22 +54,31 @@ export default function Sprout() {
         onMouseLeave={plugin.current.reset}
       >
         <CarouselContent>
-          {images.map((image, index) => (
-            <CarouselItem key={index}>
-              <div className="relative w-full aspect-[4/3] overflow-hidden">
-                <Image
-                  src={image.src}
-                  alt={image.caption}
-                  fill
-                  className="object-cover rounded-3xl"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1040px"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6 rounded-b-3xl">
-                  <p className="text-white font-medium text-lg">{image.caption}</p>
-                </div>
-              </div>
-            </CarouselItem>
-          ))}
+          {images.map((image, index) => {
+            const { src } = image;
+
+            return (
+              <CarouselItem key={index} className="flex justify-center">
+                <figure className="relative flex justify-center">
+                  <div className="relative inline-flex items-center justify-center overflow-hidden rounded-3xl">
+                    <Image
+                      src={src}
+                      alt={image.caption}
+                      width={src.width}
+                      height={src.height}
+                      className="h-[320px] w-auto max-w-full object-contain sm:h-[420px] lg:h-[480px]"
+                      sizes="(max-width: 768px) 90vw, (max-width: 1280px) 720px, 960px"
+                    />
+                  </div>
+                  <figcaption className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center">
+                    <span className="inline-flex items-center rounded-full bg-white/70 px-4 py-1.5 text-sm font-medium text-slate-900 shadow backdrop-blur">
+                      {image.caption}
+                    </span>
+                  </figcaption>
+                </figure>
+              </CarouselItem>
+            );
+          })}
         </CarouselContent>
         <CarouselPrevious className="hidden md:flex" />
         <CarouselNext className="hidden md:flex" />
@@ -165,4 +175,3 @@ export const sproutMetadata = {
   height: "h-[380px] md:h-[400px]",
   component: Sprout
 };
-

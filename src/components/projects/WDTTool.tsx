@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import type { StaticImageData } from 'next/image';
 import Autoplay from "embla-carousel-autoplay"
 import {
   Carousel,
@@ -14,8 +15,12 @@ import {
 
 import frontRender from './assets/WDTTool/front_render.png';
 import topRender from './assets/WDTTool/top_render.png';
+import fullReal from './assets/WDTTool/full_real.jpeg';
+import separatedReal from './assets/WDTTool/separated_real.jpeg';
 
-const images = [
+const images: { src: StaticImageData; caption: string }[] = [
+  { src: fullReal, caption: "Full Real" },
+  { src: separatedReal, caption: "Separated Real" },
   { src: frontRender, caption: "Front View Render" },
   { src: topRender, caption: "Top View Render" },
 ];
@@ -71,22 +76,31 @@ export default function WDTTool() {
           onMouseLeave={plugin.current.reset}
         >
           <CarouselContent>
-            {images.map((image, index) => (
-              <CarouselItem key={index}>
-                <div className="relative w-full aspect-[4/3] overflow-hidden">
-                  <Image
-                    src={image.src}
-                    alt={image.caption}
-                    fill
-                    className="object-contain rounded-3xl bg-slate-50"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1040px"
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6 rounded-b-3xl">
-                    <p className="text-white font-medium text-lg">{image.caption}</p>
-                  </div>
-                </div>
-              </CarouselItem>
-            ))}
+            {images.map((image, index) => {
+              const { src } = image;
+
+              return (
+                <CarouselItem key={index} className="flex justify-center">
+                  <figure className="relative flex justify-center">
+                    <div className="relative inline-flex items-center justify-center overflow-hidden rounded-3xl">
+                      <Image
+                        src={src}
+                        alt={image.caption}
+                        width={src.width}
+                        height={src.height}
+                        className="h-[320px] w-auto max-w-full object-contain sm:h-[420px] lg:h-[480px]"
+                        sizes="(max-width: 768px) 90vw, (max-width: 1280px) 720px, 960px"
+                      />
+                    </div>
+                    <figcaption className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center">
+                      <span className="inline-flex items-center rounded-full bg-white/70 px-4 py-1.5 text-sm font-medium text-slate-900 shadow backdrop-blur">
+                        {image.caption}
+                      </span>
+                    </figcaption>
+                  </figure>
+                </CarouselItem>
+              );
+            })}
           </CarouselContent>
           <CarouselPrevious className="hidden md:flex" />
           <CarouselNext className="hidden md:flex" />
@@ -147,24 +161,6 @@ export default function WDTTool() {
           </p>
         </div>
       </div>
-
-      {/* Lessons Section */}
-      <div className="space-y-6">
-        <h3 className="text-3xl font-bold text-slate-900">What I Learned</h3>
-        <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
-          <p>
-            <strong>Physical Iteration is Different.</strong> Coming from software where iteration is instant, physical design requires patience. Each print takes hours, and you can&apos;t just ctrl+z a failed print. It forced me to think more carefully before each iteration.
-          </p>
-          
-          <p>
-            <strong>Tolerances Matter.</strong> In CAD, everything fits perfectly. In real life, printer calibration, material shrinkage, and ambient temperature all affect the final dimensions. Learning to account for these variables was crucial.
-          </p>
-
-          <p>
-            <strong>The Full Product Experience.</strong> Creating something that works is just the start. Making it look good, package it well, and present it professionally takes just as much effort as the engineering itself.
-          </p>
-        </div>
-      </div>
     </div>
   );
 }
@@ -178,4 +174,3 @@ export const wdtToolMetadata = {
   height: "h-[380px] md:h-[370px]",
   component: WDTTool
 };
-
