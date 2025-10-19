@@ -1,8 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
-import type { StaticImageData } from 'next/image';
 import Autoplay from "embla-carousel-autoplay"
 import {
   Carousel,
@@ -12,15 +10,13 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel"
+import Picture from "@/components/Picture";
+import type { RESPONSIVE_IMAGES } from "@/components/projects/assets.generated";
 
-import appControls from './assets/Sprout/app_controls.png';
-import appPlants from './assets/Sprout/app_plants.png';
-import presentation from './assets/Sprout/presentation.jpg';
-
-const images: { src: StaticImageData; caption: string }[] = [
-  { src: presentation, caption: "Project Presentation" },
-  { src: appControls, caption: "App Controls Interface" },
-  { src: appPlants, caption: "Plant Management Screen" },
+const images: { srcKey: keyof typeof RESPONSIVE_IMAGES; caption: string }[] = [
+  { srcKey: "Sprout/presentation", caption: "Project Presentation" },
+  { srcKey: "Sprout/app_controls", caption: "App Controls Interface" },
+  { srcKey: "Sprout/app_plants", caption: "Plant Management Screen" },
 ];
 
 export default function Sprout() {
@@ -55,17 +51,13 @@ export default function Sprout() {
       >
         <CarouselContent>
           {images.map((image, index) => {
-            const { src } = image;
-
             return (
               <CarouselItem key={index} className="flex justify-center">
                 <figure className="relative flex justify-center">
                   <div className="relative inline-flex items-center justify-center overflow-hidden rounded-3xl">
-                    <Image
-                      src={src}
+                    <Picture
+                      srcKey={image.srcKey}
                       alt={image.caption}
-                      width={src.width}
-                      height={src.height}
                       className="h-[320px] w-auto max-w-full object-contain sm:h-[420px] lg:h-[480px]"
                       sizes="(max-width: 768px) 90vw, (max-width: 1280px) 720px, 960px"
                     />

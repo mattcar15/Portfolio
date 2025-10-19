@@ -1,8 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
-import type { StaticImageData } from 'next/image';
 import Autoplay from "embla-carousel-autoplay"
 import {
   Carousel,
@@ -12,17 +10,14 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel"
+import Picture from "@/components/Picture";
+import type { RESPONSIVE_IMAGES } from "@/components/projects/assets.generated";
 
-import frontRender from './assets/WDTTool/front_render.png';
-import topRender from './assets/WDTTool/top_render.png';
-import fullReal from './assets/WDTTool/full_real.jpeg';
-import separatedReal from './assets/WDTTool/separated_real.jpeg';
-
-const images: { src: StaticImageData; caption: string }[] = [
-  { src: fullReal, caption: "Full Real" },
-  { src: separatedReal, caption: "Separated Real" },
-  { src: frontRender, caption: "Front View Render" },
-  { src: topRender, caption: "Top View Render" },
+const images: { srcKey: keyof typeof RESPONSIVE_IMAGES; caption: string }[] = [
+  { srcKey: "WDTTool/full_real", caption: "Full Real" },
+  { srcKey: "WDTTool/separated_real", caption: "Separated Real" },
+  { srcKey: "WDTTool/front_render", caption: "Front View Render" },
+  { srcKey: "WDTTool/top_render", caption: "Top View Render" },
 ];
 
 export default function WDTTool() {
@@ -77,17 +72,13 @@ export default function WDTTool() {
         >
           <CarouselContent>
             {images.map((image, index) => {
-              const { src } = image;
-
               return (
                 <CarouselItem key={index} className="flex justify-center">
                   <figure className="relative flex justify-center">
                     <div className="relative inline-flex items-center justify-center overflow-hidden rounded-3xl">
-                      <Image
-                        src={src}
+                      <Picture
+                        srcKey={image.srcKey}
                         alt={image.caption}
-                        width={src.width}
-                        height={src.height}
                         className="h-[320px] w-auto max-w-full object-contain sm:h-[420px] lg:h-[480px]"
                         sizes="(max-width: 768px) 90vw, (max-width: 1280px) 720px, 960px"
                       />

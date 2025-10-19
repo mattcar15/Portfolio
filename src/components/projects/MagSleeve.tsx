@@ -1,8 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
-import type { StaticImageData } from 'next/image';
 import Autoplay from "embla-carousel-autoplay"
 import {
   Carousel,
@@ -12,15 +10,13 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel"
+import Picture from "@/components/Picture";
+import type { RESPONSIVE_IMAGES } from "@/components/projects/assets.generated";
 
-import magSleeveFront from './assets/MagSleeve/mag_sleeve_front.png';
-import magSleeveBack from './assets/MagSleeve/mag_sleeve_back.png';
-import magSleeveTop from './assets/MagSleeve/mag_sleeve_top.png';
-
-const images: { src: StaticImageData; caption: string }[] = [
-  { src: magSleeveFront, caption: "Front View - Clean Design" },
-  { src: magSleeveBack, caption: "Back View - Heat Dissipation Slots" },
-  { src: magSleeveTop, caption: "Top View - Mounting System" },
+const images: { srcKey: keyof typeof RESPONSIVE_IMAGES; caption: string }[] = [
+  { srcKey: "MagSleeve/mag_sleeve_front", caption: "Front View - Clean Design" },
+  { srcKey: "MagSleeve/mag_sleeve_back", caption: "Back View - Heat Dissipation Slots" },
+  { srcKey: "MagSleeve/mag_sleeve_top", caption: "Top View - Mounting System" },
 ];
 
 export default function MagSleeve() {
@@ -83,29 +79,25 @@ export default function MagSleeve() {
           setApi={setApi}
           plugins={[plugin.current]}
           className="max-w-3xl sm:mx-auto mb-5"
-        onMouseEnter={plugin.current.stop}
-        onMouseLeave={plugin.current.reset}
-      >
-        <CarouselContent>
-          {images.map((image, index) => {
-            const { src } = image;
-
-            return (
-              <CarouselItem key={index} className="flex justify-center">
-                <figure className="relative flex justify-center">
-                  <div className="relative inline-flex items-center justify-center overflow-hidden rounded-3xl">
-                    <Image
-                      src={src}
-                      alt={image.caption}
-                      width={src.width}
-                      height={src.height}
-                      className="h-[320px] w-auto max-w-full object-contain sm:h-[420px] lg:h-[480px]"
-                      sizes="(max-width: 768px) 90vw, (max-width: 1280px) 720px, 960px"
-                    />
-                  </div>
-                  <figcaption className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center">
-                    <span className="inline-flex items-center rounded-full bg-white/70 px-4 py-1.5 text-sm font-medium text-slate-900 shadow backdrop-blur">
-                      {image.caption}
+          onMouseEnter={plugin.current.stop}
+          onMouseLeave={plugin.current.reset}
+        >
+          <CarouselContent>
+            {images.map((image, index) => {
+              return (
+                <CarouselItem key={index} className="flex justify-center">
+                  <figure className="relative flex justify-center">
+                    <div className="relative inline-flex items-center justify-center overflow-hidden rounded-3xl">
+                      <Picture
+                        srcKey={image.srcKey}
+                        alt={image.caption}
+                        className="h-[320px] w-auto max-w-full object-contain sm:h-[420px] lg:h-[480px]"
+                        sizes="(max-width: 768px) 90vw, (max-width: 1280px) 720px, 960px"
+                      />
+                    </div>
+                    <figcaption className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center">
+                      <span className="inline-flex items-center rounded-full bg-white/70 px-4 py-1.5 text-sm font-medium text-slate-900 shadow backdrop-blur">
+                        {image.caption}
                       </span>
                     </figcaption>
                   </figure>

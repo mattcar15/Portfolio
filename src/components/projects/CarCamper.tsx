@@ -1,8 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
-import type { StaticImageData } from 'next/image';
 import Autoplay from "embla-carousel-autoplay"
 import {
   Carousel,
@@ -12,24 +10,17 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel"
+import Picture from "@/components/Picture";
+import type { RESPONSIVE_IMAGES } from "@/components/projects/assets.generated";
 
-import campView from './assets/CarCamper/camp_view.jpeg';
-import internalView from './assets/CarCamper/internal_view.jpeg';
-import oilChange from './assets/CarCamper/oil_change.jpeg';
-import frontView from './assets/CarCamper/front_view.jpeg';
-import sideView from './assets/CarCamper/side_view.jpeg';
-import backSleepingView from './assets/CarCamper/back_sleeping_view.jpeg';
-import marcView from './assets/CarCamper/marc_view.jpeg';
-import cookingView from './assets/CarCamper/cooking_view.jpeg';
-
-const images: { src: StaticImageData; caption: string }[] = [
-  { src: campView, caption: "Camp View" },
-  { src: internalView, caption: "Internal View" },
-  { src: backSleepingView, caption: "Back Sleeping View" },
-  { src: frontView, caption: "Front View" },
-  { src: cookingView, caption: "Cooking View" },
-  { src: sideView, caption: "Side View" },
-  { src: marcView, caption: "Marc View" },
+const images: { srcKey: keyof typeof RESPONSIVE_IMAGES; caption: string }[] = [
+  { srcKey: "CarCamper/camp_view", caption: "Camp View" },
+  { srcKey: "CarCamper/internal_view", caption: "Internal View" },
+  { srcKey: "CarCamper/back_sleeping_view", caption: "Back Sleeping View" },
+  { srcKey: "CarCamper/front_view", caption: "Front View" },
+  { srcKey: "CarCamper/cooking_view", caption: "Cooking View" },
+  { srcKey: "CarCamper/side_view", caption: "Side View" },
+  { srcKey: "CarCamper/marc_view", caption: "Marc View" },
 ];
 
 export default function CarCamper() {
@@ -64,19 +55,15 @@ export default function CarCamper() {
       >
         <CarouselContent>
           {images.map((image, index) => {
-            const { src } = image;
-
             return (
               <CarouselItem key={index} className="flex justify-center">
                 <figure className="relative flex justify-center">
                   <div className="relative inline-flex items-center justify-center overflow-hidden rounded-3xl">
-                    <Image
-                      src={src}
+                    <Picture
+                      srcKey={image.srcKey}
                       alt={image.caption}
-                      width={src.width}
-                      height={src.height}
-                      className="h-[320px] w-auto max-w-full object-contain sm:h-[420px] lg:h-[480px]"
                       sizes="(max-width: 768px) 90vw, (max-width: 1280px) 720px, 960px"
+                      className="h-[320px] w-auto max-w-full object-contain sm:h-[420px] lg:h-[480px]"
                     />
                   </div>
                   <figcaption className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center">
@@ -163,11 +150,10 @@ export default function CarCamper() {
           </p>
 
           <div className="my-8">
-            <Image
-              src={oilChange}
+            <Picture
+              srcKey="CarCamper/oil_change"
               alt="First oil change in San Diego"
-              width={1200}
-              height={900}
+              sizes="(max-width: 768px) 100vw, 1200px"
               className="w-full h-auto rounded-3xl"
             />
             <p className="text-center text-sm text-slate-500 mt-3 italic">My first oil change in San Diego—a proud moment on the road</p>

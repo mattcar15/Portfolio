@@ -1,0 +1,187 @@
+// Generate AVIF + fallback (JPG or PNG) in 3 sizes into src/.generated/projects-assets,
+// and emit a TS manifest for static imports.
+// Originals remain untouched in src/components/projects/assets
+
+import fs from "node:fs";
+import path from "node:path";
+import os from "node:os";
+import crypto from "node:crypto";
+import fg from "fast-glob";
+import sharp from "sharp";
+
+const SRC_DIR = path.join(process.cwd(), "src", "components", "projects", "assets");
+// All generated assets go here (mirrors SRC_DIR structure)
+const GEN_DIR = path.join(process.cwd(), "src", ".generated", "projects-assets");
+// Manifest sits next to the source assets folder for easy import paths
+const OUT_MANIFEST = path.join(SRC_DIR, "..", "assets.generated.ts");
+
+// three sizes only (you can tweak these)
+const WIDTHS = [480, 960, 1600] as const;
+// quality knobs
+const QUAL = { avif: 45, jpg: 82, png: 9 } as const;
+
+const VERBOSE = process.argv.includes("--verbose");
+
+// small p-limit to avoid thrashing
+function limiter(concurrency: number) {
+  const queue: Array<() => void> = [];
+  let active = 0;
+  return async <T>(fn: () => Promise<T>): Promise<T> =>
+    new Promise<T>((resolve, reject) => {
+      const run = () => {
+        active++;
+        fn().then(resolve, reject).finally(() => {
+          active--;
+          const next = queue.shift();
+          if (next) next();
+        });
+      };
+      if (active < concurrency) run();
+      else queue.push(run);
+    });
+}
+const lim = limiter(Math.max(2, Math.min(4, os.cpus()?.length ?? 2)));
+
+type VariantMap = Record<string, string>;
+type Entry = {
+  base: string;            // e.g. "CarCamper/hero"
+  placeholder: string;     // tiny blur (webp)
+  avif: VariantMap;        // width -> import url
+  fallback: VariantMap;    // width -> import url (jpg or png)
+  fallbackExt: "jpg" | "png";
+};
+
+const posixJoin = (...p: string[]) => p.join("/").replace(/\\/g, "/");
+
+async function rimraf(p: string) {
+  await fs.promises.rm(p, { recursive: true, force: true });
+}
+
+async function ensureDir(p: string) {
+  await fs.promises.mkdir(p, { recursive: true });
+}
+
+function shortHash(buf: Buffer) {
+  return crypto.createHash("sha1").update(buf).digest("hex").slice(0, 8);
+}
+
+async function processOne(rel: string): Promise<[string, Entry]> {
+  const srcAbs = path.join(SRC_DIR, rel);                 // source file
+  const parsed = path.parse(rel);                         // dir/name.ext
+  const key = posixJoin(parsed.dir, parsed.name);         // "CarCamper/hero"
+
+  // read metadata once
+  const meta = await sharp(srcAbs).metadata();
+  const hasAlpha = Boolean(meta.hasAlpha);
+  const fallbackExt: "jpg" | "png" = hasAlpha ? "png" : "jpg";
+
+  // mirror directory under GEN_DIR
+  const outDir = path.join(GEN_DIR, parsed.dir);
+  await ensureDir(outDir);
+
+  const entry: Entry = { base: key, placeholder: "", avif: {}, fallback: {}, fallbackExt };
+
+  // For “lg” width, cap by source width to avoid upscaling
+  const effWidths = WIDTHS.map(w => (meta.width ? Math.min(w, meta.width) : w));
+  const uniqueWidths = Array.from(new Set(effWidths)).sort((a, b) => a - b);
+
+  const jobs: Promise<unknown>[] = [];
+
+  for (const w of uniqueWidths) {
+    const base = sharp(srcAbs).resize({ width: w, withoutEnlargement: true });
+
+    // Render AVIF into buffer to content-hash filename (stable caching)
+    const avifBuf = await base.clone().avif({ quality: QUAL.avif }).toBuffer();
+    const avifName = `${parsed.name}-${w}.${shortHash(avifBuf)}.avif`;
+    const avifOut = path.join(outDir, avifName);
+    jobs.push(lim(async () => fs.promises.writeFile(avifOut, avifBuf)));
+
+    // Fallback (JPG or PNG) likewise hashed
+    let fbBuf: Buffer;
+    if (fallbackExt === "jpg") {
+      fbBuf = await base.clone().jpeg({ quality: QUAL.jpg, mozjpeg: true }).toBuffer();
+    } else {
+      // PNG: quality param is compression level; keep 9 (max) for small photos with alpha, or tweak if needed
+      fbBuf = await base.clone().png({ compressionLevel: QUAL.png }).toBuffer();
+    }
+    const fbName = `${parsed.name}-${w}.${shortHash(fbBuf)}.${fallbackExt}`;
+    const fbOut = path.join(outDir, fbName);
+    jobs.push(lim(async () => fs.promises.writeFile(fbOut, fbBuf)));
+
+    entry.avif[String(w)] = posixJoin("@/.generated/projects-assets", parsed.dir, avifName);
+    entry.fallback[String(w)] = posixJoin("@/.generated/projects-assets", parsed.dir, fbName);
+  }
+
+  // tiny placeholder (webp)
+  const tiny = await sharp(srcAbs).resize({ width: 24 }).webp({ quality: 30 }).toBuffer();
+  const tinyName = `${parsed.name}-placeholder.${shortHash(tiny)}.webp`;
+  await fs.promises.writeFile(path.join(outDir, tinyName), tiny);
+  entry.placeholder = posixJoin("@/.generated/projects-assets", parsed.dir, tinyName);
+
+  if (VERBOSE) {
+    console.log(`[img] ${rel} → sizes ${uniqueWidths.join("/")}, formats: avif + ${fallbackExt}`);
+  }
+
+  return [key, entry];
+}
+
+async function writeManifest(map: Record<string, Entry>) {
+  const lines: string[] = [
+    "// AUTO-GENERATED by src/scripts/build-images.ts — do not edit",
+    "/* eslint-disable */",
+    ""
+  ];
+  const entries: string[] = [];
+
+  for (const [key, info] of Object.entries(map)) {
+    const safe = key.replace(/[^\w]/g, "_");
+
+    const avifImps: string[] = [];
+    const fbImps: string[] = [];
+
+    for (const [w, pth] of Object.entries(info.avif)) {
+      const v = `${safe}_avif_${w}`; lines.push(`import ${v} from "${pth}";`); avifImps.push(`"${w}": ${v}`);
+    }
+    for (const [w, pth] of Object.entries(info.fallback)) {
+      const v = `${safe}_fb_${w}`;   lines.push(`import ${v} from "${pth}";`); fbImps.push(`"${w}": ${v}`);
+    }
+
+    const ph = `${safe}_placeholder`; lines.push(`import ${ph} from "${info.placeholder}";`);
+
+    entries.push(`"${key}": {
+  base: "${key}",
+  placeholder: ${ph},
+  fallbackExt: "${info.fallbackExt}",
+  avif: { ${avifImps.join(", ")} },
+  fallback: { ${fbImps.join(", ")} }
+}`);
+    lines.push("");
+  }
+
+  lines.push(`export const RESPONSIVE_IMAGES = { ${entries.join(", ")} } as const;`, "");
+  await fs.promises.writeFile(OUT_MANIFEST, lines.join("\n"), "utf8");
+}
+
+async function main() {
+  console.time("build-images");
+
+  // Clean output to avoid “dumping”
+  await rimraf(GEN_DIR);
+  await ensureDir(GEN_DIR);
+
+  const files = await fg("**/*.{png,jpg,jpeg}", { cwd: SRC_DIR, onlyFiles: true });
+  if (files.length === 0) {
+    console.log("No source images found.");
+    await writeManifest({});
+    console.timeEnd("build-images");
+    return;
+  }
+
+  const pairs = await Promise.all(files.map(rel => processOne(rel)));
+  const manifest = Object.fromEntries(pairs);
+  await writeManifest(manifest);
+
+  console.timeEnd("build-images");
+}
+
+main().catch(err => { console.error(err); process.exit(1); });
