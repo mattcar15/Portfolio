@@ -282,7 +282,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
     <section id="projects" className="min-h-screen py-32 px-6 lg:px-32">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-6xl md:text-7xl font-bold mb-16 text-black">Projects</h2>
+        <h2 className="text-6xl md:text-7xl font-bold mb-16">Projects</h2>
 
         <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
           {reorderedProjects.map((project) => {

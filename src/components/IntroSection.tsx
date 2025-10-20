@@ -2,7 +2,7 @@ export function IntroSection() {
   return (
     <section id="intro" className="min-h-screen flex items-center px-6 lg:px-32 xs:pl-24 lg:pl-48">
       <div className="max-w-5xl">
-        <div className="text-8xl md:text-9xl font-bold mb-16 leading-none bg-[linear-gradient(160deg,#fc860d,#eb491f)] bg-clip-text text-transparent">
+        <div className="text-8xl md:text-9xl font-semibold mb-16 leading-none bg-[linear-gradient(160deg,#fc860d,#eb491f)] bg-clip-text text-transparent">
           Matt Carroll
         </div>
 

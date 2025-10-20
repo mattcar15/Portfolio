@@ -18,17 +18,19 @@ export default function Celna() {
       </div>
 
       {/* Demo Video */}
-      <div className="relative w-full aspect-video overflow-hidden rounded-3xl bg-slate-100">
-        <video
-          className="w-full h-full object-cover"
-          controls
-          preload="metadata"
-        >
-          <source src="/videos/Celna/celna_demo.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+      <div className="space-y-4">
+        <div className="relative w-full aspect-video overflow-hidden rounded-3xl bg-slate-100">
+          <video
+            className="w-full h-full object-cover"
+            controls
+            preload="metadata"
+          >
+            <source src="/videos/Celna/celna_demo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <p className="text-center text-sm text-slate-600 italic">Celna demo using Claude</p>
       </div>
-
       {/* Link section */}
       <div className="text-lg text-slate-700">
         You can check out the site here: <a href="https://celna.ai" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-800 underline">celna.ai</a>
