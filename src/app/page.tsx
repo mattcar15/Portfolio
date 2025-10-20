@@ -154,7 +154,8 @@ export default function Home() {
     institution: "Georgia Institute of Technology",
     degree: "B.S. in Computer Science",
     location: "Atlanta, GA",
-    graduation: "May 2022",
+    graduation: "September 2018 - May 2022",
+    threads: "Artificial Intelligence and Info-Internetworks",
     gpa: "3.9",
     coursework: [
       "Natural Language Processing",
