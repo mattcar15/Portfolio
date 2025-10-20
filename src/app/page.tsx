@@ -22,7 +22,7 @@ const gradientPalette = [
   { stops: ['#6FE893', '#39A275'], className: 'from-[#6FE893] to-[#39A275]' },
   { stops: ['#ED876C', '#E3293E'], className: 'from-[#ED876C] to-[#E3293E]' },
   { stops: ['#3EC3B9', '#208CB0'], className: 'from-[#3EC3B9] to-[#208CB0]' },
-  { stops: ['#FF6A00', '#EE0979'], className: 'from-[#FF6A00] to-[#EE0979]' },
+  { stops: ['#D380FD', '#880DF2'], className: 'from-[#D380FD] to-[#880DF2]' },
 ] as const;
 
 type ProjectBaseData = Omit<Project, 'gradient' | 'gradientStops'>;

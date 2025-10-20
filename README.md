@@ -15,6 +15,8 @@ Personal portfolio website built with Next.js, showcasing projects and experienc
 
 ### Development
 
+IMPORTANT: If it's your first time using the lbirary you must first run `yarn build` it generates the images needed for displaying the picture objects
+
 First, install dependencies with Yarn:
 
 ```bash

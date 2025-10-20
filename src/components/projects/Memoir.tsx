@@ -52,7 +52,7 @@ export default function Memoir() {
 
 export const memoirMetadata = {
   id: 4,
-  title: "Memoir",
+  title: "Memoir App",
   description: "Open-source, local-first digital memory for Mac",
   type: "gradient" as const,
   tags: ["LLM", "MCP", "Local"],
