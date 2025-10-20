@@ -38,7 +38,7 @@ export default function Memoir() {
         <h3 className="text-3xl font-bold text-slate-900">Coming Soon</h3>
         <div className="text-lg text-slate-700 space-y-5 leading-relaxed">
           <p>
-            Currently, I&apos;m refining the memory collection system to be lihgter weight so that it can track more granular activities to build richer and more accurate memories. After this, I&apos;ll be refreshing the frontend to take advantage of the new system and then will be releasing the project!
+            Currently, I&apos;m refining the memory collection system to be lighter weight so that it can track more granular activities to build richer and more accurate memories. After this, I&apos;ll be refreshing the frontend to take advantage of the new system and then will be releasing the project!
           </p>
 
           <p>
